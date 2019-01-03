@@ -23,6 +23,13 @@ module.exports = function(chai, utils) {
             && obj.options.functional
     }
 
+    function isVue(obj) {
+        // is vue component instance (vm)
+        return obj.constructor
+            && obj.constructor.name === 'VueComponent'
+            && obj._isVue
+    }
+
     function addTypeCheckProperty(propName, typeCheckMethod, typeDescription) {
         Assertion.addProperty(propName, function() {
             const obj = this._obj
@@ -100,4 +107,24 @@ module.exports = function(chai, utils) {
      * @ref https://www.chaijs.com/api/bdd/#method_a
      */
     addTypeCheckProperty('VueTestWrapperArray', isWrapperArray, 'vue test utils WrapperArray')
+
+    /**
+     * @name Vue
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper.vm).to.be.vue
+     *
+     * @ref https://vuejs.org/v2/guide/instance.html#ad
+     */
+    Assertion.addProperty('Vue', function() {
+        const obj = this._obj
+
+        this.assert(
+            isVue(obj),
+            'expected #{this} to be a vue instance',
+            'expected #{this} to be a vue instance'
+        )
+    })
 }

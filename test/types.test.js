@@ -64,4 +64,17 @@ describe('Testing types (properties)', () => {
             })
         })
     })
+
+    describe('of vue instances', () => {
+        [mount, shallowMount].forEach(mountFn =>{
+            describe(`using mount function: "${ mountFn.name }"`, () => {
+                const wrapper = mountFn(MyComponent)
+
+                it('should detect vue instance', () => {
+                    expect(wrapper.vm).to.be.Vue
+                    expect(wrapper.vm).to.be.a.Vue
+                })
+            })
+        })
+    })
 })
