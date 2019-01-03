@@ -1,4 +1,4 @@
-const { mount, shallowMount, createLocalVue } = require('@vue/test-utils')
+const { mount, shallowMount } = require('@vue/test-utils')
 const MyComponent = require('./fixtures/MyComponent')
 const MyFunctionalComponent = require('./fixtures/MyFunctionalComponent')
 
@@ -62,14 +62,6 @@ describe('Testing types (an method)', () => {
                     })
                 })
             })
-        })
-    })
-
-    describe('of a vue instance', () => {
-        const localVue = createLocalVue()
-
-        it('should detect type of a vue instance', () => {
-            expect(localVue).to.be.a('Vue')
         })
     })
 })
