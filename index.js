@@ -127,4 +127,33 @@ module.exports = function(chai, utils) {
             'expected #{this} to be a vue instance'
         )
     })
+
+    /**
+     * Access vue-test-util's Wrapper vm
+     *
+     * All following chains will operate on the vm object
+     *
+     * @name vm
+     * @type prop
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.vm
+     * expect(wrapper).to.have.vm.which.has.a.property('$data')
+     * expect(wrapper).vm.to.have.property('$data')
+     * expect(wrapper).vm.to.be.empty
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#properties
+     */
+    Assertion.addProperty('vm', function() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const vm = obj.vm
+
+        new Assertion(vm).to.be.Vue
+
+        utils.flag(this, 'object', vm)
+    })
 }
