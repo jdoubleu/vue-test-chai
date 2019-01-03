@@ -1,3 +1,5 @@
+require('jsdom-global')()
+
 const chai = require('chai')
 const vueTestChai = require('../index')
 

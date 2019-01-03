@@ -26,6 +26,8 @@
     "@vue/test-utils": "^1.0.0-beta.28",
     "chai": "^4.2.0",
     "eslint": "^5.11.1",
+    "jsdom": "^13.1.0",
+    "jsdom-global": "^3.0.2",
     "mocha": "^5.2.0",
     "vue": "^2.5.21",
     "vue-template-compiler": "^2.5.21"
