@@ -16,5 +16,14 @@
     "unit-testing"
   ],
   "author": "Joshua Westerheide <dev@jdoubleu.de>",
-  "license": "MIT"
+  "license": "MIT",
+  "peerDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.28",
+    "chai": "^4.2.0"
+  },
+  "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.28",
+    "chai": "^4.2.0",
+    "vue": "^2.5.21"
+  }
 }
