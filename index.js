@@ -83,7 +83,7 @@ module.exports = function(chai, utils) {
      *
      * @ref https://www.chaijs.com/api/bdd/#method_a
      */
-    addTypeCheckProperty('Wrapper', isWrapper, 'vue test utils Wrapper')
+    addTypeCheckProperty('VueTestWrapper', isWrapper, 'vue test utils Wrapper')
 
     /**
      * Type property WrapperArray
@@ -99,5 +99,5 @@ module.exports = function(chai, utils) {
      *
      * @ref https://www.chaijs.com/api/bdd/#method_a
      */
-    addTypeCheckProperty('WrapperArray', isWrapperArray, 'vue test utils WrapperArray')
+    addTypeCheckProperty('VueTestWrapperArray', isWrapperArray, 'vue test utils WrapperArray')
 }

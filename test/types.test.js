@@ -41,24 +41,24 @@ describe('Testing types (properties)', () => {
                 const wrapper = mountFn(MyComponent)
 
                 it('should detect type of a Wrapper', () => {
-                    expect(wrapper).to.be.a.Wrapper
+                    expect(wrapper).to.be.a.VueTestWrapper
                 })
 
                 it('should detect type of a WrapperArray', () => {
                     const arr = wrapper.findAll('div')
 
-                    expect(arr).to.be.a.WrapperArray
+                    expect(arr).to.be.a.VueTestWrapperArray
                 })
 
                 it('should not falsely detect another type as a Wrapper', () => {
                     otherTypes.forEach(t => {
-                        expect(t, `expected "${typeof t}" not to be a Wrapper`).not.to.be.a.Wrapper
+                        expect(t, `expected "${typeof t}" not to be a Wrapper`).not.to.be.a.VueTestWrapper
                     })
                 })
 
                 it('should not falsely detect another type as a WrapperArray', () => {
                     otherTypes.forEach(t => {
-                        expect(t, `expected "${typeof t}" not to be a WrapperArray`).not.to.be.a.WrapperArray
+                        expect(t, `expected "${typeof t}" not to be a WrapperArray`).not.to.be.a.VueTestWrapperArray
                     })
                 })
             })
