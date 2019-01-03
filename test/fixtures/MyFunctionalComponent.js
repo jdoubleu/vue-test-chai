@@ -1,4 +1,4 @@
-const Vue = require('Vue')
+const Vue = require('vue')
 
 const template = `<div class="myfunctionalcomponent">
     <p>This is a functional component. It may access properties from its parent. E.g.:</p>

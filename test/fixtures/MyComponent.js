@@ -1,4 +1,4 @@
-const Vue = require('Vue')
+const Vue = require('vue')
 
 const template = `<div class="mycomponent mycomponent__container">
     <h1>Hello {{ name }}</h1>
