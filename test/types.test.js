@@ -12,25 +12,25 @@ const otherTypes = [
     function() {}
 ]
 
-describe('Testing types (an method)', () => {
+describe('Testing types (properties)', () => {
     describe('of vue components', () => {
         it('should detect type of a vue component', () => {
-            expect(MyComponent).to.be.a('VueComponent')
+            expect(MyComponent).to.be.a.VueComponent
         })
 
         it('should detect type of a vue functional component', () => {
-            expect(MyFunctionalComponent).to.be.a('VueFunctionalComponent')
+            expect(MyFunctionalComponent).to.be.a.VueFunctionalComponent
         })
 
         it('should not falsely detect another type as a vue component', () => {
             otherTypes.forEach(t => {
-                expect(t, `expected "${typeof t}" not to be a vue component`).not.to.be.a('VueComponent')
+                expect(t, `expected "${typeof t}" not to be a vue component`).not.to.be.a.VueComponent
             })
         })
 
         it('should not falsely detect another type as a vue functional component', () => {
             otherTypes.forEach(t => {
-                expect(t, `expected "${typeof t}" not to be a vue functional component`).not.to.be.a('VueFunctionalComponent')
+                expect(t, `expected "${typeof t}" not to be a vue functional component`).not.to.be.a.VueFunctionalComponent
             })
         })
     })
@@ -41,24 +41,24 @@ describe('Testing types (an method)', () => {
                 const wrapper = mountFn(MyComponent)
 
                 it('should detect type of a Wrapper', () => {
-                    expect(wrapper).to.be.a('Wrapper')
+                    expect(wrapper).to.be.a.Wrapper
                 })
 
                 it('should detect type of a WrapperArray', () => {
                     const arr = wrapper.findAll('div')
 
-                    expect(arr).to.be.a('WrapperArray')
+                    expect(arr).to.be.a.WrapperArray
                 })
 
                 it('should not falsely detect another type as a Wrapper', () => {
                     otherTypes.forEach(t => {
-                        expect(t, `expected "${typeof t}" not to be a Wrapper`).not.to.be.a('Wrapper')
+                        expect(t, `expected "${typeof t}" not to be a Wrapper`).not.to.be.a.Wrapper
                     })
                 })
 
                 it('should not falsely detect another type as a WrapperArray', () => {
                     otherTypes.forEach(t => {
-                        expect(t, `expected "${typeof t}" not to be a WrapperArray`).not.to.be.a('WrapperArray')
+                        expect(t, `expected "${typeof t}" not to be a WrapperArray`).not.to.be.a.WrapperArray
                     })
                 })
             })

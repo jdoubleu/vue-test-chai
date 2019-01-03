@@ -23,75 +23,81 @@ module.exports = function(chai, utils) {
             && obj.options.functional
     }
 
-    function useDefaultBehaviour(_super) {
-        return function defaultBehaviour() {
-            _super.apply(this, arguments)
-        }
+    function addTypeCheckProperty(propName, typeCheckMethod, typeDescription) {
+        Assertion.addProperty(propName, function() {
+            const obj = this._obj
+
+            this.assert(
+                typeCheckMethod(obj),
+                `expected #{this} to be a ${typeDescription}`,
+                `expected #{this} not to be a ${typeDescription}`
+            )
+        })
     }
 
     // chai assertions
 
     /**
-     * Add vue specific types to chai's default a and an method
+     * Type property VueComponent
      *
-     * Supported types are:
-     * - Wrapper - vue-test-utils Wrapper
-     * - WrapperArray
-     * - VueComponent
-     * - VueFunctionalComponent (is also a VueComponent)
-     * - Vue instance
+     * Check the type of the test subject
      *
-     * @name a
-     * @type method
-     * @param String type Expected type of the test subject
+     * @name VueComponent
+     * @type property
+     * @api public
      *
      * @example
-     * expect(myWrapper).to.be.a('Wrapper')
-     * expect(TheComponent).to.be.a('VueComponent)
-     * expect(someObj).to.not.be.a('VueComponent')
+     * expect(MyComponent).to.be.a.VueComponent
      *
      * @ref https://www.chaijs.com/api/bdd/#method_a
      */
-    Assertion.overwriteChainableMethod('a', function(_super) {
-        return function vueTypesCheck(type) {
-            const obj = this._obj
+    addTypeCheckProperty('VueComponent', isVueComponent, 'vue component')
 
-            switch(type) {
-            case 'Wrapper':
-                this.assert(
-                    isWrapper(obj),
-                    'expected #{this} to be a vue-test-utils Wrapper',
-                    'expected #{this} to not be a vue-test-utils Wrapper'
-                )
+    /**
+     * Type property VueFunctionalComponent
+     *
+     * Check the type of the test subject
+     *
+     * @name VueFunctionalComponent
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(MyComponent).to.be.a.VueFunctionalComponent
+     *
+     * @ref https://www.chaijs.com/api/bdd/#method_a
+     */
+    addTypeCheckProperty('VueFunctionalComponent', isVueFunctionalComponent, 'functional vue component')
 
-                break
-            case 'WrapperArray':
-                this.assert(
-                    isWrapperArray(obj),
-                    'expected #{this} to be a vue-test-utils WrapperArray',
-                    'expected #{this} to not be a vue-test-utils WrapperArray'
-                )
+    /**
+     * Type property Wrapper
+     *
+     * Check the type of the test subject
+     *
+     * @name Wrapper
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(MyComponent).to.be.a.Wrapper
+     *
+     * @ref https://www.chaijs.com/api/bdd/#method_a
+     */
+    addTypeCheckProperty('Wrapper', isWrapper, 'vue test utils Wrapper')
 
-                break
-            case 'VueComponent':
-                this.assert(
-                    isVueComponent(obj),
-                    'expected #{this} to be a vue component',
-                    'expected #{this} to not be a vue component'
-                )
-
-                break
-            case 'VueFunctionalComponent':
-                this.assert(
-                    isVueFunctionalComponent(obj),
-                    'expected #{this} to be a functional vue component',
-                    'expected #{this} not to be a functional vue component'
-                )
-
-                break
-            default:
-                _super.apply(this, arguments)
-            }
-        }
-    }, useDefaultBehaviour)
+    /**
+     * Type property WrapperArray
+     *
+     * Check the type of the test subject
+     *
+     * @name WrapperArray
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper.findAll('div')).to.be.a.WrapperArray
+     *
+     * @ref https://www.chaijs.com/api/bdd/#method_a
+     */
+    addTypeCheckProperty('WrapperArray', isWrapperArray, 'vue test utils WrapperArray')
 }
