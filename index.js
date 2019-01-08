@@ -184,4 +184,31 @@ module.exports = function(chai, utils) {
 
         utils.flag(this, 'object', element)
     })
+
+    /**
+     * Access vue-test-util's Wrapper options
+     *
+     * @name option
+     * @type method
+     * @param { string } name
+     * @param { * } val (optional)
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.option('attachedToDocument')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#properties
+     * @ref https://www.chaijs.com/api/bdd/#method_property
+     */
+    Assertion.addMethod('option', function(name, val, msg) {
+        utils.flag('message', (msg ? msg + ': ' : '') + 'Wrapper options')
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const options = obj.options
+
+        return new Assertion(options).to.have.property(...arguments)
+    })
 }

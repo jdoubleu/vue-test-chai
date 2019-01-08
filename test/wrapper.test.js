@@ -37,6 +37,27 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).element.to.be.an.instanceOf(window.HTMLElement)
                 })
             })
+
+            describe('options property', () => {
+                it('should fail when subject is not a vue-test-utils Wrapper', () => {
+                    expect(function() {
+                        expect({}).to.have.option('some')
+                    }).to.throw()
+                })
+
+                it('should assert default options', () => {
+                    const defaultOptions = {
+                        'attachedToDocument': false,
+                        'sync': true
+                    }
+
+                    Object.entries(defaultOptions).forEach(([name, value]) => {
+                        expect(wrapper).to.have.option(name)
+                        expect(wrapper).to.have.option(name, value)
+                        expect(wrapper).to.have.option(name).which.is.a('boolean')
+                    })
+                })
+            })
         })
     })
 })
