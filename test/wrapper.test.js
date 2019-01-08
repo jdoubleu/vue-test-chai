@@ -58,6 +58,26 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     })
                 })
             })
+
+            describe('attributes', () => {
+                it('should fail when subject is not a vue-test-utils Wrapper', () => {
+                    expect(function() {
+                        expect({}).to.have.attributes('some')
+                    }).to.throw()
+                })
+
+                it('should assert DOM node attributes', () => {
+                    expect(wrapper).to.have.attributes('class')
+                    expect(wrapper).to.have.attributes('class', 'mycomponent mycomponent__container')
+                    expect(wrapper).to.have.attributes('class').which.is.a('string').and.equals('mycomponent mycomponent__container')
+                })
+
+                it('should chain DOM node attributes', () => {
+                    expect(wrapper).to.have.attributes.which.has.a.property('class').which.is.a('string')
+                    expect(wrapper).to.have.attributes.which.has.a.property('class', 'mycomponent mycomponent__container')
+                    expect(wrapper).attributes.to.deep.equal({'class': 'mycomponent mycomponent__container'})
+                })
+            })
         })
     })
 })

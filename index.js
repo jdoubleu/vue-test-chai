@@ -211,4 +211,54 @@ module.exports = function(chai, utils) {
 
         return new Assertion(options).to.have.property(...arguments)
     })
+
+    /**
+     * Asserts the attributes of the DOM node from the vue-test-util Wrapper
+     *
+     * @name attributes
+     * @type method
+     * @param { string } key name of the attribute
+     * @param { * } val (optional)
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.attributes('id', 'foo')
+     * expect(wrapper).to.have.attributes('id').which.is.a('string').and.equals('foo')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#attributes-key
+     */
+    function assertWrapperAttributes(key, val, msg) {
+        utils.flag('message', (msg ? msg + ': ' : '') + 'Wrapper options')
+        const obj = this._obj
+
+        return new Assertion(obj).to.have.property(...arguments)
+    }
+
+    /**
+     * Chain vue-test-utils Wrapper attributes
+     * 
+     * @name attributes
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.attributes.which.has.a.property('id')
+     * expect(wrapper).attributes.to.deep.equal({id: 'foo' })
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#attributes-key
+     */
+    function chainWrapperAttributes() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const attributes = obj.attributes()
+
+        new Assertion(attributes).to.be.an('object')
+
+        utils.flag(this, 'object', attributes)
+    }
+
+    Assertion.addChainableMethod('attributes', assertWrapperAttributes, chainWrapperAttributes)
 }
