@@ -156,4 +156,32 @@ module.exports = function(chai, utils) {
 
         utils.flag(this, 'object', vm)
     })
+
+    /**
+     * Access vue-test-util's Wrapper element
+     *
+     * All following chains will operate on the root DOM node of the wrapper
+     *
+     * @name element
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.an.element
+     * expect(wrapper).element.to.be.a('HTMLElement')
+     * expect(wrapper).element.to.have.property('innerText')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#properties
+     */
+    Assertion.addProperty('element', function() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const element = obj.element
+
+        new Assertion(element).not.to.be.empty
+
+        utils.flag(this, 'object', element)
+    })
 }

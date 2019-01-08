@@ -21,6 +21,22 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).vm.to.have.property('$data')
                 })
             })
+
+            describe('element property', () => {
+                it('should fail when subject is not a vue-test-utils Wrapper', () => {
+                    expect(function() {
+                        expect({}).to.have.an.element
+                    }).to.throw()
+                })
+
+                it('should assert existing element property', () => {
+                    expect(wrapper).to.have.an.element
+                })
+
+                it('should be a HTMLElement', () => {
+                    expect(wrapper).element.to.be.an.instanceOf(window.HTMLElement)
+                })
+            })
         })
     })
 })
