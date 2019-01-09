@@ -42,6 +42,12 @@ module.exports = function(chai, utils) {
         })
     }
 
+    function useDefaultChainableBehaviour(_super) {
+        return function defaultBehaviour() {
+            return _super.apply(this, arguments)
+        }
+    }
+
     // chai assertions
 
     /**
@@ -319,4 +325,46 @@ module.exports = function(chai, utils) {
     }
 
     Assertion.addChainableMethod('classes', assertWrapperClasses, chainWrapperClasses)
+
+    /**
+     * Assert vue-test-utils Wrapper contains
+     *
+     * @name contains
+     * @alias contain
+     * @type method
+     * @param { string|Component } el selector
+     * @api public
+     *
+     * @example
+     * expect(wrapper).that.contains('div')
+     * expect(wrapper).to.contain('div')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#contains-selector
+     * @ref https://www.chaijs.com/api/bdd/#method_include
+     */
+    function overwriteChainableAssertion(_super) {
+        return function assertWrapperContains(el) {
+            const obj = this._obj
+
+            try {
+                new Assertion(obj).to.be.a.VueTestWrapper
+
+                this.assert(
+                    true === obj.contains(el),
+                    'expected #{this} to contain #{exp}',
+                    'expected #{this} not to contain #{exp}',
+                    el
+                )
+            } catch(e) {
+                if (!(e instanceof chai.AssertionError)) {
+                    throw e
+                }
+
+                _super.apply(this, arguments)
+            }
+        }
+    }
+
+    Assertion.overwriteChainableMethod('contain', overwriteChainableAssertion, useDefaultChainableBehaviour)
+    Assertion.overwriteChainableMethod('contains', overwriteChainableAssertion, useDefaultChainableBehaviour)
 }

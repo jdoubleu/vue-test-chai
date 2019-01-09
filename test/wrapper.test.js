@@ -98,6 +98,18 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).classes.to.include('mycomponent')
                 })
             })
+
+            describe('contains', () => {
+                it('should assert Wrapper contains', () => {
+                    expect(wrapper).that.contains('div')
+                    expect(wrapper).to.contain('div')
+                })
+
+                it('should assert default behaviour', () => {
+                    expect(['first', 2]).to.contain(2)
+                    expect(['first', 2]).not.to.contain('div')
+                })
+            })
         })
     })
 })
