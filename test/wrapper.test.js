@@ -111,6 +111,20 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).to.have.emitted('change').which.deep.contains([4])
                 })
             })
+
+            describe('exists', () => {
+                testExpectToThrowAssertionError(() => expect({}).to.have.exists())
+
+                it('should assert that the wrapper exists', () => {
+                    expect(wrapper).to.exists()
+                    expect(wrapper.find('blockquote')).not.to.exists()
+                })
+
+                it('should assert using "exist" property', () => {
+                    expect(wrapper).to.exist
+                    expect(wrapper.find('blockquote')).not.to.exist
+                })
+            })
         })
     })
 })

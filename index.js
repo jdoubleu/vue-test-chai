@@ -52,6 +52,16 @@ module.exports = function(chai, utils) {
         }
     }
 
+    function assertIsAnyWrapper(obj) {
+        const wrapperAssertion = new Assertion(obj)
+
+        try {
+            wrapperAssertion.is.a.VueTestWrapper
+        } catch {
+            wrapperAssertion.is.a.VueTestErrorWrapper
+        }
+    }
+
     // chai assertions
 
     /**
@@ -438,5 +448,63 @@ module.exports = function(chai, utils) {
 
         utils.flag(prop, 'message', msg + 'emitted events ' + utils.inspect(eventName))
         return prop
+    })
+
+    /**
+     * Assert that the wrapper exists
+     *
+     * @name exists
+     * @type method
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.exists()
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#exists
+     */
+    function assertWrapperExists() {
+        const obj = this._obj
+
+        assertIsAnyWrapper(obj)
+
+        this.assert(
+            obj.exists() === true,
+            'expected #{this} to exist',
+            'expected #{this} not to exist'
+        )
+    }
+
+    Assertion.addMethod('exists', assertWrapperExists)
+
+    /**
+     * Same as method 'exists'
+     *
+     * @name exist
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.exist
+     *
+     * @ref * @ref https://www.chaijs.com/api/bdd/#method_exist
+     */
+    Assertion.overwriteProperty('exist', function(_super) {
+        return function() {
+            const obj = this._obj
+
+            try {
+                assertIsAnyWrapper(obj)
+
+                const assertion = new Assertion(obj)
+                utils.transferFlags(this, assertion)
+                assertion.to.exists()
+            } catch(e) {
+                if (!(e instanceof chai.AssertionError)) {
+                    throw e
+                }
+
+                _super.apply(this, arguments)
+            }
+        }
     })
 }
