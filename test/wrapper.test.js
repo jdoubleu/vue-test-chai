@@ -167,6 +167,18 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).find('#cinc').to.be.empty
                 })
             })
+
+            describe('visible', () => {
+                testExpectToThrowAssertionError(() => expect({}).to.be.visible)
+
+                it('should assert that wrapper is visible', () => {
+                    expect(wrapper).to.be.visible
+                })
+
+                it('should assert that hidden-element is not visible', () => {
+                    expect(wrapper).find('.hidden-element').not.to.be.visible
+                })
+            })
         })
     })
 })

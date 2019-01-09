@@ -12,6 +12,7 @@ const template = `<div class="mycomponent mycomponent__container">
             <button @click="handleCounterBtnClick">Increase counter by {{ counterIncrement }}</button>
         </div>
     </div>
+    <span class="hidden-element" v-show="false">This info is hidden!</span>
 </div>`
 
 module.exports = Vue.extend({

@@ -637,4 +637,28 @@ module.exports = function(chai, utils) {
             }
         }
     })
+
+    /**
+     * Assert the Wrapper is visible
+     *
+     * @name visible
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.be.visible
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#isvisible
+     */
+    Assertion.addProperty('visible', function() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        this.assert(
+            obj.isVisible() === true,
+            'expected #{this} to be visible, but was not',
+            'expected #{this} not to be visible, but was'
+        )
+    })
 }
