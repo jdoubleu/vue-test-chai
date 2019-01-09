@@ -196,6 +196,22 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).name.to.contain('Component')
                 })
             })
+
+            describe('props', () => {
+                testExpectToThrowAssertionError(() => expect({}).props)
+
+                it('should assert props of wrapper', () => {
+                    expect(wrapper).to.have.props('name')
+                    expect(wrapper).to.have.props('github', '')
+                    expect(wrapper).not.to.have.props('twitter')
+                })
+
+                it('should be able to chain wrapper props', () => {
+                    expect(wrapper).props.to.have.property('name')
+                    expect(wrapper).props.to.have.property('github', '')
+                    expect(wrapper).props.not.to.have.property('twitter')
+                })
+            })
         })
     })
 })

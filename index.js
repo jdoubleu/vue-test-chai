@@ -737,4 +737,57 @@ module.exports = function(chai, utils) {
     }
 
     Assertion.addChainableMethod('name', assertWrapperName, chainWrapperName)
+
+    /**
+     * Assert that wrapper has prop
+     *
+     * @name props
+     * @type method
+     * @param { string } key
+     * @param { * } value (optional)
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.props('value', 1)
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#props-key
+     * @ref https://www.chaijs.com/api/bdd/#method_property
+     */
+    function assertWrapperProps(key, value, msg) {
+        const obj = this._obj
+
+        const propsAssertion = new Assertion(obj)
+        utils.flag(propsAssertion, 'message', (msg ? msg + ': ' : '') + 'Wrapper props')
+        utils.transferFlags(this, propsAssertion)
+
+        return propsAssertion.to.have.property(...arguments)
+    }
+
+    /**
+     * Chain Wrapper's props
+     *
+     * @name props
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper).props.to.have.property('value', 1)
+     * expect(wrapper).props.to.deep.equal({value: 1})
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#props-key
+     */
+    function chainWrapperProps() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueInstance
+
+        const props = obj.props()
+
+        new Assertion(props).to.be.an('object')
+
+        utils.flag(this, 'object', props)
+    }
+
+    Assertion.addChainableMethod('props', assertWrapperProps, chainWrapperProps)
 }
