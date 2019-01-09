@@ -600,4 +600,40 @@ module.exports = function(chai, utils) {
     Assertion.addMethod('selector', assertWrapperIs)
 
     // TODO: find better integration for selector (e.g. expect(wrapper).to.be('div'), .to.match.selector('div'), .to.be.a('div'))
+
+    /**
+     * Assert that the Wrapper does contain child nodes
+     *
+     * @name empty
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper).not.to.be.empty
+     * expect(wrapper).find('input').to.be.empty
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#isempty
+     * @ref https://www.chaijs.com/api/bdd/#method_empty
+     */
+    Assertion.overwriteProperty('empty', function(_super) {
+        return function assertWrapperEmpty() {
+            const obj = this._obj
+
+            try {
+                new Assertion(obj).to.be.a.VueTestWrapper
+
+                this.assert(
+                    obj.isEmpty() === true,
+                    'expected #{this} to be empty, but was not',
+                    'expected #{this} not to be empty, but it was'
+                )
+            } catch(e) {
+                if (!(e instanceof chai.AssertionError)) {
+                    throw e
+                }
+
+                _super.apply(this, arguments)
+            }
+        }
+    })
 }

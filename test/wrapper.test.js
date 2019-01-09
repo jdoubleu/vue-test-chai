@@ -157,6 +157,16 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).to.be.selector(MyComponent)
                 })
             })
+
+            describe('empty', () => {
+                it('should assert that wrapper is not empty', () => {
+                    expect(wrapper).not.to.be.empty
+                })
+
+                it('should assert that input#cinc is empty', () => {
+                    expect(wrapper).find('#cinc').to.be.empty
+                })
+            })
         })
     })
 })
