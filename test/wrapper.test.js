@@ -51,6 +51,8 @@ describe('Vue test utils Wrapper assertions tests', () => {
                         expect(wrapper).to.have.option(name, value)
                         expect(wrapper).to.have.option(name).which.is.a('boolean')
                     })
+
+                    expect(wrapper).not.to.have.option('someOption')
                 })
             })
 
@@ -61,12 +63,14 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).to.have.attributes('class')
                     expect(wrapper).to.have.attributes('class', 'mycomponent mycomponent__container')
                     expect(wrapper).to.have.attributes('class').which.is.a('string').and.equals('mycomponent mycomponent__container')
+                    expect(wrapper).not.to.have.attributes('data-info')
                 })
 
                 it('should chain DOM node attributes', () => {
                     expect(wrapper).to.have.attributes.which.has.a.property('class').which.is.a('string')
                     expect(wrapper).to.have.attributes.which.has.a.property('class', 'mycomponent mycomponent__container')
                     expect(wrapper).attributes.to.deep.equal({'class': 'mycomponent mycomponent__container'})
+                    expect(wrapper).attributes.not.to.have.property('data-info')
                 })
             })
 

@@ -243,14 +243,17 @@ module.exports = function(chai, utils) {
      * @ref https://www.chaijs.com/api/bdd/#method_property
      */
     Assertion.addMethod('option', function(name, val, msg) {
-        utils.flag('message', (msg ? msg + ': ' : '') + 'Wrapper options')
         const obj = this._obj
 
         new Assertion(obj).to.be.a.VueTestWrapper
 
         const options = obj.options
 
-        return new Assertion(options).to.have.property(...arguments)
+        const optionsAssertion = new Assertion(options)
+        utils.transferFlags(this, optionsAssertion, false)
+        utils.flag(optionsAssertion, 'message', (msg ? msg + ': ' : '') + 'Wrapper options')
+
+        return optionsAssertion.to.have.property(...arguments)
     })
 
     /**
@@ -270,10 +273,13 @@ module.exports = function(chai, utils) {
      * @ref https://vue-test-utils.vuejs.org/api/wrapper/#attributes-key
      */
     function assertWrapperAttributes(key, val, msg) {
-        utils.flag('message', (msg ? msg + ': ' : '') + 'Wrapper options')
         const obj = this._obj
 
-        return new Assertion(obj).to.have.property(...arguments)
+        const attributesAssertion = new Assertion(obj)
+        utils.transferFlags(this, attributesAssertion, false)
+        utils.flag(attributesAssertion, 'message', (msg ? msg + ': ' : '') + 'Wrapper attributes')
+
+        return attributesAssertion.to.have.property(...arguments)
     }
 
     /**
@@ -758,8 +764,8 @@ module.exports = function(chai, utils) {
         const obj = this._obj
 
         const propsAssertion = new Assertion(obj)
+        utils.transferFlags(this, propsAssertion, false)
         utils.flag(propsAssertion, 'message', (msg ? msg + ': ' : '') + 'Wrapper props')
-        utils.transferFlags(this, propsAssertion)
 
         return propsAssertion.to.have.property(...arguments)
     }
