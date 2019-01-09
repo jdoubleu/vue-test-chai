@@ -563,4 +563,41 @@ module.exports = function(chai, utils) {
 
         utils.flag(this, 'object', obj.html())
     })
+
+    /**
+     * Assert the Wrapper to be/match a selector
+     *
+     * @name isSelector
+     * @alias selector
+     * @type method
+     * @param { string } selector
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).isSelector('div')
+     * expect(wrapper).to.be.selector(MyComponent)
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#is-selector
+     */
+    function assertWrapperIs(selector, msg) {
+        msg = msg ? msg + ': ' : ''
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const result = obj.is(selector)
+
+        this.assert(
+            result === true,
+            msg + 'expected #{this} to be #{exp}',
+            msg + 'expected #{this} not to be #{exp}',
+            selector
+        )
+    }
+
+    Assertion.addMethod('isSelector', assertWrapperIs)
+    Assertion.addMethod('selector', assertWrapperIs)
+
+    // TODO: find better integration for selector (e.g. expect(wrapper).to.be('div'), .to.match.selector('div'), .to.be.a('div'))
 }

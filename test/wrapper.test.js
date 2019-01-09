@@ -146,6 +146,17 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).html.not.to.be.empty
                 })
             })
+
+            describe('isSelector', () => {
+                testExpectToThrowAssertionError(() => expect({}).isSelector('some'))
+
+                it('should assert that the wrapper is a div', () => {
+                    expect(wrapper).isSelector('div')
+                    expect(wrapper).isSelector(MyComponent)
+                    expect(wrapper).to.be.selector('div')
+                    expect(wrapper).to.be.selector(MyComponent)
+                })
+            })
         })
     })
 })
