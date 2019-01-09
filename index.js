@@ -237,7 +237,7 @@ module.exports = function(chai, utils) {
 
     /**
      * Chain vue-test-utils Wrapper attributes
-     * 
+     *
      * @name attributes
      * @type property
      * @api public
@@ -261,4 +261,62 @@ module.exports = function(chai, utils) {
     }
 
     Assertion.addChainableMethod('attributes', assertWrapperAttributes, chainWrapperAttributes)
+
+    /**
+     * Assert DOM node classes of the vue-test-util Wrapper
+     *
+     * @name classes
+     * @type method
+     * @param { string|string[] } className (optional)
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.classes('some-class')
+     * expect(wrapper).to.have.classes(['some-class', 'otherclass'])
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#classes-classname
+     * @ref https://www.chaijs.com/api/bdd/#method_include
+     */
+    function assertWrapperClasses(className, msg) {
+        utils.flag('message', (msg ? msg + ': ' : '') + 'Wrapper classes')
+        const obj = this._obj
+
+        function assertClassName(name) {
+            new Assertion(obj).to.include(name)
+        }
+
+        if (Array.isArray(className)) {
+            className.forEach(assertClassName)
+        } else {
+            assertClassName(className)
+        }
+    }
+
+    /**
+     * Chain vue-test-utils Wrapper's DOM node classes
+     *
+     * @name classes
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper).classes.to.include('some-class')
+     * expect(wrapper).to.have.classes.with.a.lengthOf(2)
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#classes-classname
+     */
+    function chainWrapperClasses() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const classes = obj.classes()
+
+        new Assertion(classes).to.be.an('array')
+
+        utils.flag(this, 'object', classes)
+    }
+
+    Assertion.addChainableMethod('classes', assertWrapperClasses, chainWrapperClasses)
 }
