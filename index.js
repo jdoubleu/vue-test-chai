@@ -91,12 +91,12 @@ module.exports = function(chai, utils) {
      *
      * Check the type of the test subject
      *
-     * @name Wrapper
+     * @name VueTestWrapper
      * @type property
      * @api public
      *
      * @example
-     * expect(MyComponent).to.be.a.Wrapper
+     * expect(MyComponent).to.be.a.VueTestWrapper
      *
      * @ref https://www.chaijs.com/api/bdd/#method_a
      */
@@ -107,12 +107,12 @@ module.exports = function(chai, utils) {
      *
      * Check the type of the test subject
      *
-     * @name WrapperArray
+     * @name VueTestWrapperArray
      * @type property
      * @api public
      *
      * @example
-     * expect(wrapper.findAll('div')).to.be.a.WrapperArray
+     * expect(wrapper.findAll('div')).to.be.a.VueTestWrapperArray
      *
      * @ref https://www.chaijs.com/api/bdd/#method_a
      */
