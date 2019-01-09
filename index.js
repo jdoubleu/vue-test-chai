@@ -796,4 +796,58 @@ module.exports = function(chai, utils) {
     }
 
     Assertion.addChainableMethod('props', assertWrapperProps, chainWrapperProps)
+
+    /**
+     * Assert text content of Wrapper
+     *
+     * @name text
+     * @type method
+     * @param { string } value
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.text('the content')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#text
+     */
+    function assertWrapperText(value, msg) {
+        msg = msg ? msg + ': ' : ''
+        const obj = this._obj
+
+        this.assert(
+            obj === value,
+            msg + 'expected text to equal #{exp}, but was #{act}',
+            msg + 'expected text not to equal #{exp}, but was #{act}',
+            value,
+            obj
+        )
+    }
+
+    /**
+     * Chain Wrapper's text
+     *
+     * @name text
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper).text.to.equal('the content')
+     * expect(wrapper).text.to.contain('content')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#text
+     */
+    function chainWrapperText() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const text = obj.text()
+
+        new Assertion(text).to.be.a('string')
+
+        utils.flag(this, 'object', text)
+    }
+
+    Assertion.addChainableMethod('text', assertWrapperText, chainWrapperText)
 }

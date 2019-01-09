@@ -216,6 +216,22 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).props.not.to.have.property('twitter')
                 })
             })
+
+            describe('text', () => {
+                testExpectToThrowAssertionError(() => expect({}).text)
+
+                it('should assert text content of wrapper', () => {
+                    const label = wrapper.find('label')
+
+                    expect(label).to.have.text('Counter increment:')
+                    expect(label).not.to.have.text('Counter decrement:')
+                })
+
+                it('should be able to chain text content of wrapper', () => {
+                    expect(wrapper).text.to.contain('Hello')
+                    expect(wrapper).text.not.to.contain('Bye')
+                })
+            })
         })
     })
 })
