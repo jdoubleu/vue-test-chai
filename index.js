@@ -450,6 +450,8 @@ module.exports = function(chai, utils) {
         return prop
     })
 
+    // TODO: implement emittedByOrder() method (https://vue-test-utils.vuejs.org/api/wrapper/#emittedbyorder)
+
     /**
      * Assert that the wrapper exists
      *
@@ -539,4 +541,6 @@ module.exports = function(chai, utils) {
 
         utils.flag(this, 'object', el)
     })
+
+    // TODO: implement findAll() method (https://vue-test-utils.vuejs.org/api/wrapper/#findall-selector)
 }
