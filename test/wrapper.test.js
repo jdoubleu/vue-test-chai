@@ -138,6 +138,14 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).to.find('h1').which.has.attributes('id', 'heading')
                 })
             })
+
+            describe('html', () => {
+                testExpectToThrowAssertionError(() => expect({}).html)
+
+                it('should be able to chain the html', () => {
+                    expect(wrapper).html.not.to.be.empty
+                })
+            })
         })
     })
 })

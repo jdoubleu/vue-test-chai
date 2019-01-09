@@ -543,4 +543,24 @@ module.exports = function(chai, utils) {
     })
 
     // TODO: implement findAll() method (https://vue-test-utils.vuejs.org/api/wrapper/#findall-selector)
+
+    /**
+     * Chain html of the wrapped DOM node
+     *
+     * @name html
+     * @type prop
+     * @api public
+     *
+     * @example
+     * expect(wrapper).html.not.to.be.empty
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#html
+     */
+    Assertion.addProperty('html', function() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        utils.flag(this, 'object', obj.html())
+    })
 }
