@@ -661,4 +661,29 @@ module.exports = function(chai, utils) {
             'expected #{this} not to be visible, but was'
         )
     })
+
+    /**
+     * Assert Wrapper is a Vue instance
+     *
+     * @name VueInstance
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.be.a.VueInstance
+     * expect(wrapper).find('button').not.to.be.a.VueInstance
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#isvueinstance
+     */
+    Assertion.addProperty('VueInstance', function() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        this.assert(
+            obj.isVueInstance() === true,
+            `expected #{this} to be a vue instance`,
+            `expected #{this} not to be a vue instance`
+        )
+    })
 }

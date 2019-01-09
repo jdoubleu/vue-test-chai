@@ -1,3 +1,4 @@
+const { AssertionError } = require('chai')
 const { mount, shallowMount } = require('@vue/test-utils')
 const MyComponent = require('./fixtures/MyComponent')
 const MyFunctionalComponent = require('./fixtures/MyFunctionalComponent')
@@ -54,6 +55,22 @@ describe('Testing types (properties)', () => {
                     const non = wrapper.find('non-existing-tag')
 
                     expect(non).to.be.an.VueTestErrorWrapper
+                })
+
+                it('should assert wrapper to be a VueInstance', () => {
+                    expect(wrapper).to.be.a.VueInstance
+                })
+
+                it('should assert wrapped DOM element is not a VueInstance', () => {
+                    const el = wrapper.find('button')
+
+                    expect(el).not.to.be.a.VueInstance
+                })
+
+                it('should throw error if wrapper is not a Wrapper', () => {
+                    expect(function() {
+                        expect({}).to.be.a.VueInstance
+                    }).to.throw(AssertionError)
                 })
 
                 it('should not falsely detect another type as a Wrapper', () => {
