@@ -179,6 +179,23 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper).find('.hidden-element').not.to.be.visible
                 })
             })
+
+            describe('name', () => {
+                testExpectToThrowAssertionError(() => expect({}).name)
+
+                it('should assert name of wrapper and elements', () => {
+                    expect(wrapper).to.have.name('MyComponent')
+                    expect(wrapper).not.to.have.name('OtherComponent')
+                    expect(wrapper).find('#cinc').to.have.name('input')
+                    expect(wrapper).find('#cinc').not.to.have.name('button')
+                })
+
+                it('should be able to chain the name', () => {
+                    expect(wrapper).name.to.equal('MyComponent')
+                    expect(wrapper).name.not.to.equal('OtherComponent')
+                    expect(wrapper).name.to.contain('Component')
+                })
+            })
         })
     })
 })

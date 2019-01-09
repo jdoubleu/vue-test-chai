@@ -686,4 +686,55 @@ module.exports = function(chai, utils) {
             `expected #{this} not to be a vue instance`
         )
     })
+
+    /**
+     * Assert Wrapper's name
+     *
+     * @name name
+     * @type method
+     * @param { string } name
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.name('MyComponent')
+     * expect(wrapper).find('.btn').to.have.name('button')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#name
+     */
+    function assertWrapperName(name, msg) {
+        msg = msg ? msg + ': ' : ''
+        const obj = this._obj
+
+        this.assert(
+            obj === name,
+            msg + 'expected name to equal #{exp}, but was #{act}',
+            msg + 'expected name not to equal #{exp}, but was #{act}',
+            name,
+            obj
+        )
+    }
+
+    /**
+     * Chain Wrapper's name
+     *
+     * @name name
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper).name.to.equal('div')
+     * expect(wrapper).name.to.contain('Component')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#name
+     */
+    function chainWrapperName() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        utils.flag(this, 'object', obj.name())
+    }
+
+    Assertion.addChainableMethod('name', assertWrapperName, chainWrapperName)
 }
