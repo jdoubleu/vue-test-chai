@@ -50,6 +50,12 @@ describe('Testing types (properties)', () => {
                     expect(arr).to.be.a.VueTestWrapperArray
                 })
 
+                it('should detect type of an ErrorWrapper', () => {
+                    const non = wrapper.find('non-existing-tag')
+
+                    expect(non).to.be.an.VueTestErrorWrapper
+                })
+
                 it('should not falsely detect another type as a Wrapper', () => {
                     otherTypes.forEach(t => {
                         expect(t, `expected "${typeof t}" not to be a Wrapper`).not.to.be.a.VueTestWrapper
@@ -59,6 +65,12 @@ describe('Testing types (properties)', () => {
                 it('should not falsely detect another type as a WrapperArray', () => {
                     otherTypes.forEach(t => {
                         expect(t, `expected "${typeof t}" not to be a WrapperArray`).not.to.be.a.VueTestWrapperArray
+                    })
+                })
+
+                it('should not falsely detect another type as a WrapperArray', () => {
+                    otherTypes.forEach(t => {
+                        expect(t, `expected "${typeof t}" not to be a WrapperArray`).not.to.be.a.VueTestErrorWrapper
                     })
                 })
             })

@@ -12,6 +12,10 @@ module.exports = function(chai, utils) {
         return obj instanceof WrapperArray
     }
 
+    function isErrorWrapper(obj) {
+        return obj.constructor && obj.constructor.name === 'ErrorWrapper'
+    }
+
     function isVueComponent(obj) {
         return obj.prototype
             && obj.prototype.constructor
@@ -113,6 +117,20 @@ module.exports = function(chai, utils) {
      * @ref https://www.chaijs.com/api/bdd/#method_a
      */
     addTypeCheckProperty('VueTestWrapperArray', isWrapperArray, 'vue test utils WrapperArray')
+
+    /**
+     * Type property ErrorWrapper
+     *
+     * Check the type of the test subject
+     *
+     * @name VueTestErrorWrapper
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapper.find('non-existing-tag')).to.be.an.VueTestErrorWrapper
+     */
+    addTypeCheckProperty('VueTestErrorWrapper', isErrorWrapper, 'vue test utils ErrorWrapper')
 
     /**
      * @name Vue
