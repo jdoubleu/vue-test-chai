@@ -41,7 +41,8 @@ module.exports = function(chai, utils) {
             this.assert(
                 typeCheckMethod(obj),
                 `expected #{this} to be a ${typeDescription}`,
-                `expected #{this} not to be a ${typeDescription}`
+                `expected #{this} not to be a ${typeDescription}`,
+                propName
             )
         })
     }
@@ -59,6 +60,12 @@ module.exports = function(chai, utils) {
             wrapperAssertion.is.a.VueTestWrapper
         } catch {
             wrapperAssertion.is.a.VueTestErrorWrapper
+        }
+    }
+
+    function throwIfWrapperAssertionFailed(e) {
+        if (!(e instanceof chai.AssertionError) || e.expected !== 'VueTestWrapper') {
+            throw e
         }
     }
 
@@ -384,9 +391,7 @@ module.exports = function(chai, utils) {
                     el
                 )
             } catch(e) {
-                if (!(e instanceof chai.AssertionError)) {
-                    throw e
-                }
+                throwIfWrapperAssertionFailed(e)
 
                 _super.apply(this, arguments)
             }
@@ -501,9 +506,7 @@ module.exports = function(chai, utils) {
                 utils.transferFlags(this, assertion)
                 assertion.to.exists()
             } catch(e) {
-                if (!(e instanceof chai.AssertionError)) {
-                    throw e
-                }
+                throwIfWrapperAssertionFailed(e)
 
                 _super.apply(this, arguments)
             }
@@ -628,9 +631,7 @@ module.exports = function(chai, utils) {
                     'expected #{this} not to be empty, but it was'
                 )
             } catch(e) {
-                if (!(e instanceof chai.AssertionError)) {
-                    throw e
-                }
+                throwIfWrapperAssertionFailed(e)
 
                 _super.apply(this, arguments)
             }
