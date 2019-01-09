@@ -97,6 +97,20 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(['first', 2]).not.to.contain('div')
                 })
             })
+
+            describe('emitted', () => {
+                testExpectToThrowAssertionError(() => expect({}).to.have.emitted('some'))
+
+                it('should assert emitted events', () => {
+                    expect(wrapper).to.have.emitted('change', 0)
+                    expect(wrapper).not.to.have.emitted('change')
+                    wrapper.vm.handleCounterBtnClick()
+                    expect(wrapper).to.have.emitted('change')
+                    expect(wrapper).to.have.emitted('change', 1)
+                    expect(wrapper).not.to.have.emitted('change', 2)
+                    expect(wrapper).to.have.emitted('change').which.deep.contains([4])
+                })
+            })
         })
     })
 })

@@ -367,4 +367,58 @@ module.exports = function(chai, utils) {
 
     Assertion.overwriteChainableMethod('contain', overwriteChainableAssertion, useDefaultChainableBehaviour)
     Assertion.overwriteChainableMethod('contains', overwriteChainableAssertion, useDefaultChainableBehaviour)
+
+    /**
+     * Assert that the wrapped component emitted events
+     *
+     * @name emitted
+     * @type method
+     * @param { string } eventName
+     * @param { int } times (optional) how often the event should have been emitted
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.emitted('change')
+     * expect(wrapper).not.to.have.emitted('change')
+     * expect(wrapper).to.have.emitted('click', 7)
+     * expect(wrapper).to.have.emitted('change').which.deep.contains({value: 'newValue'})
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#emitted
+     */
+    Assertion.addMethod('emitted', function(eventName, times, msg) {
+        msg = msg ? msg + ':' : ''
+        utils.flag('message', msg + 'Wrapper emitted')
+        const obj = this._obj
+        const negate = utils.flag(this, 'negate')
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const events = obj.emitted()
+        new Assertion(events).to.be.an('object')
+
+        const assertEvent = new Assertion(events)
+        if (times === 0 || (negate && !(times > 0))) {
+            utils.flag(assertEvent, 'negate', true)
+        }
+
+        const prop = assertEvent.to.have.property(eventName)
+
+        if (times > 0) {
+            new Assertion(prop).to.be.ok
+
+            const event = utils.flag(prop, 'object')
+
+            this.assert(
+                times === event.length,
+                'expected ' + utils.inspect(eventName) + ' to have been emitted #{exp} times but was #{act}',
+                'expected ' + utils.inspect(eventName) + ' to have not been emitted #{exp} times but was #{act}',
+                times,
+                event.length
+            )
+        }
+
+        utils.flag(prop, 'message', msg + 'emitted events ' + utils.inspect(eventName))
+        return prop
+    })
 }

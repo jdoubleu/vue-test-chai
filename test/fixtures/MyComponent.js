@@ -36,6 +36,7 @@ module.exports = Vue.extend({
     methods: {
         handleCounterBtnClick() {
             this.counter += parseInt(this.counterIncrement)
+            this.$emit('change', this.counter)
         }
     }
 })
