@@ -125,6 +125,19 @@ describe('Vue test utils Wrapper assertions tests', () => {
                     expect(wrapper.find('blockquote')).not.to.exist
                 })
             })
+
+            describe('find', () => {
+                testExpectToThrowAssertionError(() => expect({}).to.have.find('some'))
+
+                it('should assert that the wrapper has children', () => {
+                    expect(wrapper).to.find('div')
+                    expect(wrapper).to.find('#cinc')
+                })
+
+                it('should be able to chain the #find() method', () => {
+                    expect(wrapper).to.find('h1').which.has.attributes('id', 'heading')
+                })
+            })
         })
     })
 })

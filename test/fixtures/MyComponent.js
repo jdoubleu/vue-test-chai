@@ -1,7 +1,7 @@
 const Vue = require('vue')
 
 const template = `<div class="mycomponent mycomponent__container">
-    <h1>Hello {{ name }}</h1>
+    <h1 id="heading">Hello {{ name }}</h1>
     <p v-if="github">Your GitHub profile is {{ github }}.</p>
     <p v-else>You do not have a GitHub profile.</p>
     <div class="counter">

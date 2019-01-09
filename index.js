@@ -507,4 +507,36 @@ module.exports = function(chai, utils) {
             }
         }
     })
+
+    /**
+     * Assert that the wrapper has a child matching the given selector which exists
+     *
+     * This method is chainable on the found element.
+     *
+     * @name find
+     * @type method
+     * @param { string|Component } selector
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.find('div')
+     * expect(wrapper).not.to.find('blockquote')
+     * expect(wrapper).to.find('h1').which.has.attributes('id', 'page-heading')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#find-selector
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#exists
+     */
+    Assertion.addMethod('find', function(selector, msg) {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const el = obj.find(selector)
+
+        utils.flag(this, 'message', (msg ? msg + ': ' : '') + 'expected #{this} to find ' + utils.inspect(selector))
+        new Assertion(el).to.exists()
+
+        utils.flag(this, 'object', el)
+    })
 }
