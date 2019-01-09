@@ -1,5 +1,12 @@
+const { AssertionError } = require('chai')
 const { mount, shallowMount } = require('@vue/test-utils')
 const MyComponent = require('./fixtures/MyComponent')
+
+function testExpectToThrowAssertionError(fn, msg) {
+    it('should fail when subject is not a vue-test-utils Wrapper' + (msg ? ': ' + msg : msg), () => {
+        expect(fn).to.throw(AssertionError)
+    })
+}
 
 describe('Vue test utils Wrapper assertions tests', () => {
     [mount, shallowMount].forEach(mountFn => {
@@ -7,11 +14,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             const wrapper = mountFn(MyComponent)
 
             describe('vm property', () => {
-                it('should fail when subject is not a vue-test-utils Wrapper', () => {
-                    expect(function() {
-                        expect({}).to.have.vm
-                    }).to.throw()
-                })
+                testExpectToThrowAssertionError(() => expect({}).to.have.vm)
 
                 it('should assert existing vm property', () => {
                     expect(wrapper).to.have.vm
@@ -23,11 +26,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('element property', () => {
-                it('should fail when subject is not a vue-test-utils Wrapper', () => {
-                    expect(function() {
-                        expect({}).to.have.an.element
-                    }).to.throw()
-                })
+                testExpectToThrowAssertionError(() => expect({}).to.have.an.element)
 
                 it('should assert existing element property', () => {
                     expect(wrapper).to.have.an.element
@@ -39,11 +38,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('options property', () => {
-                it('should fail when subject is not a vue-test-utils Wrapper', () => {
-                    expect(function() {
-                        expect({}).to.have.option('some')
-                    }).to.throw()
-                })
+                testExpectToThrowAssertionError(() => expect({}).to.have.option('some'))
 
                 it('should assert default options', () => {
                     const defaultOptions = {
@@ -60,11 +55,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('attributes', () => {
-                it('should fail when subject is not a vue-test-utils Wrapper', () => {
-                    expect(function() {
-                        expect({}).to.have.attributes('some')
-                    }).to.throw()
-                })
+                testExpectToThrowAssertionError(() => expect({}).to.have.attributes('some'))
 
                 it('should assert DOM node attributes', () => {
                     expect(wrapper).to.have.attributes('class')
@@ -80,11 +71,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('classes', () => {
-                it('should fail when subject is not a vue-test-utils Wrapper', () => {
-                    expect(function() {
-                        expect({}).to.have.classes('some')
-                    }).to.throw()
-                })
+                testExpectToThrowAssertionError(() => expect({}).to.have.classes('some'))
 
                 it('should assert DOM node classes', () => {
                     expect(wrapper).to.have.classes('mycomponent')
