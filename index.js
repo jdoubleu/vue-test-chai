@@ -58,7 +58,7 @@ module.exports = function(chai, utils) {
 
         try {
             wrapperAssertion.is.a.VueTestWrapper
-        } catch {
+        } catch(_) {
             wrapperAssertion.is.a.VueTestErrorWrapper
         }
     }
@@ -688,8 +688,8 @@ module.exports = function(chai, utils) {
 
         this.assert(
             obj.isVueInstance() === true,
-            `expected #{this} to be a vue instance`,
-            `expected #{this} not to be a vue instance`
+            'expected #{this} to be a vue instance',
+            'expected #{this} not to be a vue instance'
         )
     })
 
