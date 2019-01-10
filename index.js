@@ -557,7 +557,33 @@ module.exports = function(chai, utils) {
         utils.flag(this, 'object', el)
     })
 
-    // TODO: implement findAll() method (https://vue-test-utils.vuejs.org/api/wrapper/#findall-selector)
+    /**
+     * Chain children of Wrapper as WrapperArray
+     *
+     * @name findAll
+     * @type method
+     * @param { string|Component } selector
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).findAll('div').to.be.selector('div')
+     * expect(wrapper).to.findAll('h1').which.has.a.wrapperAt(0).that.is.a.selector('h1')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#findall-selector
+     */
+    Assertion.addMethod('findAll', function(selector, msg) {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const elm = obj.findAll(selector)
+
+        utils.flag(this, 'message', (msg ? msg + ': ' : '') + 'expected #{this} to find ' + utils.inspect(selector))
+        new Assertion(elm).to.be.a.VueTestWrapperArray
+
+        utils.flag(this, 'object', elm)
+    })
 
     /**
      * Chain html of the wrapped DOM node

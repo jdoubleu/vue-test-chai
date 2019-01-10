@@ -153,6 +153,19 @@ describe('Vue test utils Wrapper assertions tests', () => {
         }))
     })
 
+    describe('findAll', () => {
+        testExpectToThrowAssertionError(e => e.to.have.findAll('some'))
+
+        it('should assert that the wrapper has children', w(wrapper => {
+            expect(wrapper).to.findAll('div')
+            expect(wrapper).to.findAll('#cinc')
+        }))
+
+        it('should be able to chain the #findAll() method', w(wrapper => {
+            expect(wrapper).to.findAll('h1').which.has.a.wrapperAt(0).that.is.a.selector('h1')
+        }))
+    })
+
     describe('html', () => {
         testExpectToThrowAssertionError(e => e.html)
 
