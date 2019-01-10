@@ -54,16 +54,6 @@ module.exports = function(chai, utils) {
         }
     }
 
-    function assertIsAnyWrapper(obj) {
-        const wrapperAssertion = new Assertion(obj)
-
-        try {
-            wrapperAssertion.is.a.VueTestWrapper
-        } catch(_) {
-            wrapperAssertion.is.a.VueTestErrorWrapper
-        }
-    }
-
     // chai assertions
 
     /**
@@ -143,6 +133,29 @@ module.exports = function(chai, utils) {
      * expect(wrapper.find('non-existing-tag')).to.be.an.VueTestErrorWrapper
      */
     addTypeCheckProperty('VueTestErrorWrapper', isErrorWrapper, 'vue test utils ErrorWrapper')
+
+    /**
+     * Type property for any wrapper (Wrapper, ErrorWrapper)
+     *
+     * Check the type of the test subject
+     *
+     * @name VueTestAnyWrapper
+     * @type property
+     * @api private
+     *
+     * @example
+     * expect(wrapper).to.be.an.VueTestAnyWrapper
+     * expect({}).not.to.be.an.VueTestAnyWrapper
+     */
+    Assertion.addProperty('VueTestAnyWrapper', function() {
+        const obj = this._obj
+
+        this.assert(
+            isWrapper(obj) || isErrorWrapper(obj),
+            'expected #{this} to be either Wrapper or ErrorWrapper',
+            'expected #{this} to be neither Wrapper or ErrorWrapper'
+        )
+    })
 
     /**
      * @name Vue
@@ -570,7 +583,7 @@ module.exports = function(chai, utils) {
     function assertWrapperExists() {
         const obj = this._obj
 
-        assertIsAnyWrapper(obj)
+        new Assertion(obj).to.be.VueTestAnyWrapper
 
         this.assert(
             obj.exists() === true,

@@ -65,6 +65,11 @@ describe('Testing types (properties)', () => {
             expect(non).to.be.an.VueTestErrorWrapper
         }))
 
+        it('should detect type of an any wrapper', w(wrapper => {
+            expect(wrapper).to.be.VueTestAnyWrapper
+            expect(wrapper.find('non-existing')).to.be.VueTestAnyWrapper
+        }))
+
         it('should assert wrapper to be a VueInstance', w(wrapper => {
             expect(wrapper).to.be.a.VueInstance
         }))
@@ -90,6 +95,12 @@ describe('Testing types (properties)', () => {
         it('should throw error if wrapper is not a Wrapper', () => {
             expect(function() {
                 expect({}).to.be.a.VueInstance
+            }).to.throw(AssertionError)
+        })
+
+        it('should throw error if wrapper is not any wrapper', () => {
+            expect(function() {
+                expect({}).to.be.VueTestAnyWrapper
             }).to.throw(AssertionError)
         })
 

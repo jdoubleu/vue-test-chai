@@ -2,13 +2,17 @@ const { AssertionError } = require('chai')
 const { mount, shallowMount } = require('@vue/test-utils')
 const MyComponent = require('./fixtures/MyComponent')
 
-function testExpectToThrowAssertionError(fn, msg) {
+function testExpectToThrowAssertionError(fn, expectedErrorMsg, msg) {
+    if (!expectedErrorMsg) {
+        expectedErrorMsg = 'vue test utils Wrapper'
+    }
+
     it('should fail when subject is not a vue-test-utils Wrapper' + (msg ? ': ' + msg : ''), () => {
         function testThrow() {
             fn(expect({}))
         }
 
-        expect(testThrow).to.throw(AssertionError, /vue test utils (Error)?Wrapper/)
+        expect(testThrow).to.throw(AssertionError, expectedErrorMsg)
     })
 }
 
@@ -198,7 +202,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
     })
 
     describe('exists', () => {
-        testExpectToThrowAssertionError(e => e.to.have.exists())
+        testExpectToThrowAssertionError(e => e.to.have.exists(), 'be either Wrapper or ErrorWrapper')
 
         it('should assert that the wrapper exists', w(wrapper => {
             expect(wrapper).to.exists()
