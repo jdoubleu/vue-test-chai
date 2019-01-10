@@ -64,18 +64,6 @@ module.exports = function(chai, utils) {
         }
     }
 
-    function throwIfWrapperAssertionFailed(e) {
-        if (!(e instanceof chai.AssertionError) || e.expected !== 'VueTestWrapper') {
-            throw e
-        }
-    }
-
-    function throwIfWrapperArrayAssertionFailed(e) {
-        if (!(e instanceof chai.AssertionError) || e.expected !== 'VueTestWrapperArray') {
-            throw e
-        }
-    }
-
     // chai assertions
 
     /**
@@ -394,20 +382,16 @@ module.exports = function(chai, utils) {
         return function assertWrapperContains(selector) {
             const obj = this._obj
 
-            try {
-                new Assertion(obj).to.be.a.VueTestWrapper
-
-                this.assert(
-                    true === obj.contains(selector),
-                    'expected #{this} to contain #{exp}',
-                    'expected #{this} not to contain #{exp}',
-                    selector
-                )
-            } catch(e) {
-                throwIfWrapperAssertionFailed(e)
-
-                _super.apply(this, arguments)
+            if (!isWrapper(obj)) {
+                return _super.apply(this, arguments)
             }
+
+            this.assert(
+                true === obj.contains(selector),
+                'expected #{this} to contain #{exp}',
+                'expected #{this} not to contain #{exp}',
+                selector
+            )
         }
     }
 
@@ -610,20 +594,16 @@ module.exports = function(chai, utils) {
      * @ref * @ref https://www.chaijs.com/api/bdd/#method_exist
      */
     Assertion.overwriteProperty('exist', function(_super) {
-        return function() {
+        return function assertWrapperExist() {
             const obj = this._obj
 
-            try {
-                assertIsAnyWrapper(obj)
-
-                const assertion = new Assertion(obj)
-                utils.transferFlags(this, assertion)
-                assertion.to.exists()
-            } catch(e) {
-                throwIfWrapperAssertionFailed(e)
-
-                _super.apply(this, arguments)
+            if (!isWrapper(obj) && !isErrorWrapper(obj)) {
+                return _super.apply(this, arguments)
             }
+
+            const assertion = new Assertion(obj)
+            utils.transferFlags(this, assertion)
+            assertion.to.exists()
         }
     })
 
@@ -762,19 +742,15 @@ module.exports = function(chai, utils) {
         return function assertWrapperEmpty() {
             const obj = this._obj
 
-            try {
-                new Assertion(obj).to.be.a.VueTestWrapper
-
-                this.assert(
-                    obj.isEmpty() === true,
-                    'expected #{this} to be empty, but was not',
-                    'expected #{this} not to be empty, but it was'
-                )
-            } catch(e) {
-                throwIfWrapperAssertionFailed(e)
-
-                _super.apply(this, arguments)
+            if (!isWrapper(obj)) {
+                return _super.apply(this, arguments)
             }
+
+            this.assert(
+                obj.isEmpty() === true,
+                'expected #{this} to be empty, but was not',
+                'expected #{this} not to be empty, but it was'
+            )
         }
     })
 
@@ -1086,20 +1062,16 @@ module.exports = function(chai, utils) {
         return function assertWrapperArrayContains(selector) {
             const obj = this._obj
 
-            try {
-                new Assertion(obj).to.be.a.VueTestWrapperArray
-
-                this.assert(
-                    true === obj.contains(selector),
-                    'expected #{this} to contain #{exp}',
-                    'expected #{this} not to contain #{exp}',
-                    selector
-                )
-            } catch(e) {
-                throwIfWrapperArrayAssertionFailed(e)
-
-                _super.apply(this, arguments)
+            if (!isWrapperArray(obj)) {
+                return _super.apply(this, arguments)
             }
+
+            this.assert(
+                true === obj.contains(selector),
+                'expected #{this} to contain #{exp}',
+                'expected #{this} not to contain #{exp}',
+                selector
+            )
         }
     }
 
@@ -1127,22 +1099,18 @@ module.exports = function(chai, utils) {
             msg = msg ? msg + ': ' : ''
             const obj = this._obj
 
-            try {
-                new Assertion(obj).to.be.a.VueTestWrapperArray
-
-                const result = obj.is(selector)
-
-                this.assert(
-                    result === true,
-                    msg + 'expected #{this} to be #{exp}',
-                    msg + 'expected #{this} not to be #{exp}',
-                    selector
-                )
-            } catch(e) {
-                throwIfWrapperArrayAssertionFailed(e)
-
-                _super.apply(this, arguments)
+            if (!isWrapperArray(obj)) {
+                return _super.apply(this, arguments)
             }
+
+            const result = obj.is(selector)
+
+            this.assert(
+                result === true,
+                msg + 'expected #{this} to be #{exp}',
+                msg + 'expected #{this} not to be #{exp}',
+                selector
+            )
         }
     }
 
@@ -1169,19 +1137,15 @@ module.exports = function(chai, utils) {
         return function assertWrapperEmpty() {
             const obj = this._obj
 
-            try {
-                new Assertion(obj).to.be.a.VueTestWrapperArray
-
-                this.assert(
-                    obj.isEmpty() === true,
-                    'expected #{this} to be empty, but was not',
-                    'expected #{this} not to be empty, but it was'
-                )
-            } catch(e) {
-                throwIfWrapperArrayAssertionFailed(e)
-
-                _super.apply(this, arguments)
+            if (!isWrapperArray(obj)) {
+                return _super.apply(this, arguments)
             }
+
+            this.assert(
+                obj.isEmpty() === true,
+                'expected #{this} to be empty, but was not',
+                'expected #{this} not to be empty, but it was'
+            )
         }
     })
 
@@ -1202,19 +1166,15 @@ module.exports = function(chai, utils) {
         return function assertWrapperArrayIsVueInstance() {
             const obj = this._obj
 
-            try {
-                new Assertion(obj).to.be.a.VueTestWrapperArray
-
-                this.assert(
-                    obj.isVueInstance() === true,
-                    'expected all Wrappers in #{this} to be a VueInstance',
-                    'expected all Wrappers in #{this} not to be a VueInstance'
-                )
-            } catch(e) {
-                throwIfWrapperArrayAssertionFailed(e)
-
-                _super.apply(this, arguments)
+            if (!isWrapperArray(obj)) {
+                return _super.apply(this, arguments)
             }
+
+            this.assert(
+                obj.isVueInstance() === true,
+                'expected all Wrappers in #{this} to be a VueInstance',
+                'expected all Wrappers in #{this} not to be a VueInstance'
+            )
         }
     })
 }
