@@ -1,12 +1,14 @@
 const Vue = require('vue')
 
-const template = `<div class="myfunctionalcomponent">
-    <p>This is a functional component. It may access properties from its parent. E.g.:</p>
-    <p>The name in the parent is {{ props.name }}</p>
-</div>`
-
 module.exports = Vue.extend({
     name: 'MyFunctionalComponent',
     functional: true,
-    template
+    render(h, { props }) {
+        return h('div', {
+            staticClass: 'myfunctionalcomponent'
+        }, [
+            h('p', 'This is a functional component. It can render props without maintaining a state.'),
+            h('p', 'You choose to greet: ' + props.name)
+        ])
+    }
 })
