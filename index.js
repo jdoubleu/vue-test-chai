@@ -977,4 +977,49 @@ module.exports = function(chai, utils) {
 
     Assertion.overwriteChainableMethod('contain', overwriteContainsAssertionForWrapperArray, useDefaultChainableBehaviour)
     Assertion.overwriteChainableMethod('contains', overwriteContainsAssertionForWrapperArray, useDefaultChainableBehaviour)
+
+    /**
+     * Assert every Wrapper's DOM node or vm in WrapperArray to match selector
+     *
+     * @name isSelector
+     * @alias selector
+     * @type method
+     * @param { string } selector
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapperArr).isSelector('div')
+     * expect(wrapperArr).to.be.selector(MyComponent)
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper-array/#is-selector
+     */
+    function overwriteWrapperIsAssertionForWrapperArray(_super) {
+        return function assertWrapperArrayIs(selector, msg) {
+            msg = msg ? msg + ': ' : ''
+            const obj = this._obj
+
+            try {
+                new Assertion(obj).to.be.a.VueTestWrapperArray
+
+                const result = obj.is(selector)
+
+                this.assert(
+                    result === true,
+                    msg + 'expected #{this} to be #{exp}',
+                    msg + 'expected #{this} not to be #{exp}',
+                    selector
+                )
+            } catch(e) {
+                throwIfWrapperArrayAssertionFailed(e)
+
+                _super.apply(this, arguments)
+            }
+        }
+    }
+
+    Assertion.overwriteMethod('isSelector', overwriteWrapperIsAssertionForWrapperArray)
+    Assertion.overwriteMethod('selector', overwriteWrapperIsAssertionForWrapperArray)
+
+    // TODO: find better integration for selector (e.g. expect(wrapperArr).to.be('div'), .to.match.selector('div'), .to.be.a('div'))
 }

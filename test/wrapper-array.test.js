@@ -75,6 +75,13 @@ describe('Vue test utils WrapperArray assertions tests', () => {
                     expect(['first', 2]).not.to.contain('div')
                 })
 			})
+
+			describe('isSelector', () => {
+                it('should assert that the WrapperArray is a div', () => {
+                    expect(wrapperArr).isSelector('div')
+                    expect(wrapperArr).to.be.selector('div')
+                })
+            })
         })
     })
 })
