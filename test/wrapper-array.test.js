@@ -3,7 +3,7 @@ const { mount, shallowMount } = require('@vue/test-utils')
 const MyComponent = require('./fixtures/MyComponent')
 
 function testExpectToThrowAssertionError(fn, msg) {
-    it('should fail when subject is not a vue-test-utils WrapperArray' + (msg ? ': ' + msg : msg), () => {
+    it('should fail when subject is not a vue-test-utils WrapperArray' + (msg ? ': ' + msg : ''), () => {
         function testThrow() {
             fn(expect({}))
         }
