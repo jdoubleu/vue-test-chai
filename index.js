@@ -1056,4 +1056,37 @@ module.exports = function(chai, utils) {
             }
         }
     })
+
+    /**
+     * Assert every Wrapper in WrapperArray is Vue instance.
+     *
+     * @name VueInstance
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapperArr).to.be.a.VueInstance
+     * expect(otherArr).not.to.be.a.VueInstance
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper-array/#isvueinstance
+     */
+    Assertion.overwriteProperty('VueInstance', function(_super) {
+        return function assertWrapperArrayIsVueInstance() {
+            const obj = this._obj
+
+            try {
+                new Assertion(obj).to.be.a.VueTestWrapperArray
+
+                this.assert(
+                    obj.isVueInstance() === true,
+                    'expected all Wrappers in #{this} to be a VueInstance',
+                    'expected all Wrappers in #{this} not to be a VueInstance'
+                )
+            } catch(e) {
+                throwIfWrapperArrayAssertionFailed(e)
+
+                _super.apply(this, arguments)
+            }
+        }
+    })
 }

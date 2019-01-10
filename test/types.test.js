@@ -2,6 +2,7 @@ const { AssertionError } = require('chai')
 const { mount, shallowMount } = require('@vue/test-utils')
 const MyComponent = require('./fixtures/MyComponent')
 const MyFunctionalComponent = require('./fixtures/MyFunctionalComponent')
+const MyComposedComponent = require('./fixtures/MyComposedComponent')
 
 const otherTypes = [
     'a String',
@@ -61,10 +62,22 @@ describe('Testing types (properties)', () => {
                     expect(wrapper).to.be.a.VueInstance
                 })
 
+                it('should assert WrapperArray has only VueInstances', () => {
+                    const otherArr = mountFn(MyComposedComponent).findAll(MyComponent)
+
+                    expect(otherArr).to.be.a.VueInstance
+                })
+
                 it('should assert wrapped DOM element is not a VueInstance', () => {
                     const el = wrapper.find('button')
 
                     expect(el).not.to.be.a.VueInstance
+                })
+
+                it('should assert WrapperArray not only has VueInstances', () => {
+                    const arr = wrapper.findAll('div')
+
+                    expect(arr).not.to.be.a.VueInstance
                 })
 
                 it('should throw error if wrapper is not a Wrapper', () => {
