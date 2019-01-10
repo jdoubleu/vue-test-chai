@@ -380,7 +380,7 @@ module.exports = function(chai, utils) {
      * @name contains
      * @alias contain
      * @type method
-     * @param { string|Component } el selector
+     * @param { string|Component } selector
      * @api public
      *
      * @example
@@ -391,17 +391,17 @@ module.exports = function(chai, utils) {
      * @ref https://www.chaijs.com/api/bdd/#method_include
      */
     function overwriteContainsAssertionForWrapper(_super) {
-        return function assertWrapperContains(el) {
+        return function assertWrapperContains(selector) {
             const obj = this._obj
 
             try {
                 new Assertion(obj).to.be.a.VueTestWrapper
 
                 this.assert(
-                    true === obj.contains(el),
+                    true === obj.contains(selector),
                     'expected #{this} to contain #{exp}',
                     'expected #{this} not to contain #{exp}',
-                    el
+                    selector
                 )
             } catch(e) {
                 throwIfWrapperAssertionFailed(e)
