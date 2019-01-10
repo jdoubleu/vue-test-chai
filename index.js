@@ -1,4 +1,5 @@
 const { Wrapper, WrapperArray } = require('@vue/test-utils')
+const deepEql = require('deep-equal')
 
 module.exports = function(chai, utils) {
     const Assertion = chai.Assertion
@@ -467,7 +468,108 @@ module.exports = function(chai, utils) {
         return prop
     })
 
-    // TODO: implement emittedByOrder() method (https://vue-test-utils.vuejs.org/api/wrapper/#emittedbyorder)
+    /**
+     * Assert Wrapper has emitted the following events by order
+     *
+     * @name emittedByOrder
+     * @type method
+     * @param { string[]|Array<{name: string, args: Array<*>}> } events
+     * @param { int } offset (optional) default 0
+     * @param { string } msg (optional)
+     * @api public
+     *
+     * @example
+     * expect(wrapper).to.have.emittedByOrder(['ready', 'change', 'destroyed'])
+     * expect(wrapper).to.have.emittedByOrder(['change', 'destroyed'], 1)
+     * expect(wrapper).to.have.emittedByOrder([{ name: 'change', args: [4] }])
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper/#emittedbyorder
+     */
+    Assertion.addMethod('emittedByOrder', function(events, offset, msg) {
+        msg = msg ? msg + ': ' : ''
+        offset = offset ? offset : 0
+        const obj = this._obj
+        const negate = utils.flag(this, 'negate')
+
+        new Assertion(obj).to.be.a.VueTestWrapper
+
+        const emittedByOrder = obj.emittedByOrder()
+
+        new Assertion(emittedByOrder).to.be.an('array')
+
+        const filteredEmitted = emittedByOrder.slice(offset)
+
+        function prepareExpectedEventsMsg(expectedEvents) {
+            return expectedEvents.map(event => typeof event === 'object' ? event : { name: event, args: '*' })
+        }
+
+        if (!negate) {
+            this.assert(
+                events.length <= filteredEmitted.length,
+                msg + 'expected #{this} to have emitted #{exp} events, but was #{act}',
+                msg + 'expected #{this} not to have emitted #{exp} events, but was #{act}',
+                events.length,
+                filteredEmitted.length
+            )
+        }
+
+        let globalOutcome = true
+
+        events.forEach((event, index) => {
+            let actualEvent = filteredEmitted[index]
+
+            let expectedEventName = event,
+                expectedEventArgs
+
+            if (typeof event === 'object') {
+                expectedEventName = event.name
+                expectedEventArgs = event.args
+            }
+
+            if (negate && !actualEvent) {
+                actualEvent = {
+                    name: false,
+                    args: false
+                }
+            }
+
+            let eventAssertion = expectedEventName === actualEvent.name
+            if (expectedEventArgs) {
+                eventAssertion = eventAssertion
+                    && deepEql(actualEvent.args, expectedEventArgs)
+            }
+
+            if (!negate) {
+                this.assert(
+                    eventAssertion === true,
+                    msg + 'expected #{this} to have emitted ' + utils.inspect(expectedEventName)
+                        + ' at ' + utils.inspect(index) + ''
+                        + (expectedEventArgs ? ' with args ' + utils.inspect(expectedEventArgs)
+                            + ', but it has been emitted with ' + utils.inspect(actualEvent.args) : ''),
+                    msg + 'expected #{this} not to have emitted ' + utils.inspect(expectedEventName)
+                        + ' at ' + utils.inspect(index) + ''
+                        + (expectedEventArgs ? ' with args ' + utils.inspect(expectedEventArgs)
+                            + ', but it has been emitted with ' + utils.inspect(actualEvent.args) : ''),
+                    prepareExpectedEventsMsg(events),
+                    filteredEmitted,
+                    true
+                )
+            } else {
+                // one of all expected events has to be wrong
+                globalOutcome = globalOutcome && eventAssertion === true
+            }
+        })
+
+        if (negate) {
+            this.assert(
+                globalOutcome === true,
+                msg + 'expected #{this} to have emitted #{exp} in order, but was #{act}',
+                msg + 'expected #{this} not to have emitted #{exp} in order, but was #{act}',
+                prepareExpectedEventsMsg(events),
+                filteredEmitted
+            )
+        }
+    })
 
     /**
      * Assert that the wrapper exists

@@ -126,6 +126,77 @@ describe('Vue test utils Wrapper assertions tests', () => {
         }))
     })
 
+    describe('emittedByOrder', () => {
+        testExpectToThrowAssertionError(e => e.to.have.emittedByOrder(['some']))
+
+        it('should assert emittedByOrder events by names', w(wrapper => {
+            expect(wrapper).to.have.emittedByOrder([])
+            expect(wrapper).not.to.have.emittedByOrder(['change'])
+
+            wrapper.vm.handleCounterBtnClick()
+
+            expect(wrapper).to.have.emittedByOrder(['change'])
+            expect(wrapper).not.to.have.emittedByOrder(['ready'])
+            expect(wrapper).not.to.have.emittedByOrder(['change', 'change'])
+
+            wrapper.vm.handleCounterBtnClick()
+
+            expect(wrapper).to.have.emittedByOrder(['change', 'change'])
+            expect(wrapper).not.to.have.emittedByOrder(['ready', 'change'])
+            expect(wrapper).not.to.have.emittedByOrder(['change', 'change', 'change'])
+        }))
+
+        it('should assert emittedByOrder events by names with offset', w(wrapper => {
+            expect(wrapper).to.have.emittedByOrder([], 0)
+            expect(wrapper).to.have.emittedByOrder([], 1)
+
+            wrapper.vm.handleCounterBtnClick()
+
+            expect(wrapper).to.have.emittedByOrder(['change'])
+            expect(wrapper).to.have.emittedByOrder(['change'], 0)
+            expect(wrapper).not.to.have.emittedByOrder(['change'], 1)
+
+            wrapper.vm.handleCounterBtnClick()
+
+            expect(wrapper).to.have.emittedByOrder(['change'], 1)
+
+            wrapper.vm.handleCounterBtnClick()
+
+            expect(wrapper).to.have.emittedByOrder(['change'], 2)
+            expect(wrapper).to.have.emittedByOrder(['change', 'change'], 1)
+            expect(wrapper).not.to.have.emittedByOrder(['change', 'change'], 2)
+        }))
+
+        it('should assert emittedByOrder events with args', w(wrapper => {
+            expect(wrapper).not.to.have.emittedByOrder([{ name: 'change', args: [4]}])
+
+            wrapper.vm.handleCounterBtnClick()
+
+            expect(wrapper).to.have.emittedByOrder([{ name: 'change', args: [4]}])
+            expect(wrapper).not.to.have.emittedByOrder([{ name: 'change', args: [999]}])
+
+            wrapper.vm.handleCounterBtnClick()
+
+            expect(wrapper).to.have.emittedByOrder(['change', { name: 'change', args: [5]}])
+            expect(wrapper).to.have.emittedByOrder([{ name: 'change', args: [4]}, 'change'])
+            expect(wrapper).to.have.emittedByOrder([{ name: 'change', args: [4]}, { name: 'change', args: [5]}])
+            expect(wrapper).not.to.have.emittedByOrder([{ name: 'change', args: [999]}, 'change'])
+        }))
+
+        it('should assert emittedByOrder events with args and offset', w(wrapper => {
+            wrapper.vm.handleCounterBtnClick()
+
+            expect(wrapper).to.have.emittedByOrder([{ name: 'change', args: [4]}], 0)
+            expect(wrapper).not.to.have.emittedByOrder([{ name: 'change', args: [4]}], 1)
+
+            wrapper.vm.handleCounterBtnClick()
+
+            expect(wrapper).to.have.emittedByOrder([{ name: 'change', args: [5]}], 1)
+            expect(wrapper).not.to.have.emittedByOrder([{ name: 'change', args: [5]}], 0)
+            expect(wrapper).not.to.have.emittedByOrder([{ name: 'change', args: [999]}], 1)
+        }))
+    })
+
     describe('exists', () => {
         testExpectToThrowAssertionError(e => e.to.have.exists())
 
