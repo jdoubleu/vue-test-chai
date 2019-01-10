@@ -38,6 +38,31 @@ describe('Vue test utils WrapperArray assertions tests', () => {
 					expect(wrapperArr).to.have.a.lengthOf.at.least(2).and.at.most(5)
 				})
 			})
+
+			describe('at method', () => {
+				testExpectToThrowAssertionError(e => e.wrapperAt(1))
+
+				it('should fail if index is not a number', () => {
+					expect(function() {
+						expect(wrapperArr).wrapperAt('some')
+					}).to.throw(AssertionError, 'number')
+				})
+
+				it('should throw error if index not found', () => {
+					expect(function() {
+						expect(wrapperArr).wrapperAt(999)
+					}).to.throw('no item exists at')
+				})
+
+				it('should assert that WrapperArray has a Wrapper at 0', () => {
+					expect(wrapperArr).to.have.a.wrapperAt(0)
+				})
+
+				it('should chain a Wrapper', () => {
+					expect(wrapperArr).wrapperAt(1).to.be.a.VueTestWrapper
+					expect(wrapperArr).wrapperAt(0).to.be.a.selector('div')
+				})
+			})
         })
     })
 })

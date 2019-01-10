@@ -896,4 +896,39 @@ module.exports = function(chai, utils) {
         // This is a stub, because chai already supports length property access
         // @see https://www.chaijs.com/api/plugins/#method_addlengthguard
     }
+
+    /**
+     * Assert and chain a Wrapper at index in WrapperArray
+     *
+     * @name wrapperAt
+     * @type method
+     * @api public
+     *
+     * @example
+     * expect(wrapperArr).to.have.a.wrapperAt(0)
+     * expect(wrapperArr).wrapperAt(1).to.be.a.selector('div')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper-array/#at-index
+     * @ref https://www.chaijs.com/api/bdd/#method_language-chains
+     */
+    Assertion.addMethod('wrapperAt', function(index) {
+        new Assertion(index).to.be.a('number', 'index can only be a number')
+
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapperArray
+
+        try {
+            const wrapper = obj.at(index)
+
+            new Assertion(wrapper).to.be.a.VueTestWrapper
+
+            utils.flag(this, 'object', wrapper)
+        } catch(e) {
+            throw new chai.AssertionError(
+                'expected ' + utils.inspect(obj) + ' to have a Wrapper at ' + utils.inspect(index) + ': ' + e.message,
+                { stack: e.stack }
+            )
+        }
+    })
 }
