@@ -4,7 +4,11 @@ const MyComponent = require('./fixtures/MyComponent')
 
 function testExpectToThrowAssertionError(fn, msg) {
     it('should fail when subject is not a vue-test-utils Wrapper' + (msg ? ': ' + msg : msg), () => {
-        expect(fn).to.throw(AssertionError)
+        function testThrow() {
+            fn(expect({}))
+        }
+
+        expect(testThrow).to.throw(AssertionError, /vue test utils (Error)?Wrapper/)
     })
 }
 
@@ -14,7 +18,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             const wrapper = mountFn(MyComponent)
 
             describe('vm property', () => {
-                testExpectToThrowAssertionError(() => expect({}).to.have.vm)
+                testExpectToThrowAssertionError(e => e.to.have.a.vm)
 
                 it('should assert existing vm property', () => {
                     expect(wrapper).to.have.vm
@@ -26,7 +30,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('element property', () => {
-                testExpectToThrowAssertionError(() => expect({}).to.have.an.element)
+                testExpectToThrowAssertionError(e => e.to.have.an.element)
 
                 it('should assert existing element property', () => {
                     expect(wrapper).to.have.an.element
@@ -38,7 +42,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('options property', () => {
-                testExpectToThrowAssertionError(() => expect({}).to.have.option('some'))
+                testExpectToThrowAssertionError(e => e.to.have.option('some'))
 
                 it('should assert default options', () => {
                     const defaultOptions = {
@@ -57,7 +61,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('attributes', () => {
-                testExpectToThrowAssertionError(() => expect({}).to.have.attributes('some'))
+                testExpectToThrowAssertionError(e => e.to.have.attributes('some'))
 
                 it('should assert DOM node attributes', () => {
                     expect(wrapper).to.have.attributes('class')
@@ -75,7 +79,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('classes', () => {
-                testExpectToThrowAssertionError(() => expect({}).to.have.classes('some'))
+                testExpectToThrowAssertionError(e => e.to.have.classes('some'))
 
                 it('should assert DOM node classes', () => {
                     expect(wrapper).to.have.classes('mycomponent')
@@ -103,7 +107,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('emitted', () => {
-                testExpectToThrowAssertionError(() => expect({}).to.have.emitted('some'))
+                testExpectToThrowAssertionError(e => e.to.have.emitted('some'))
 
                 it('should assert emitted events', () => {
                     expect(wrapper).to.have.emitted('change', 0)
@@ -117,7 +121,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('exists', () => {
-                testExpectToThrowAssertionError(() => expect({}).to.have.exists())
+                testExpectToThrowAssertionError(e => e.to.have.exists())
 
                 it('should assert that the wrapper exists', () => {
                     expect(wrapper).to.exists()
@@ -131,7 +135,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('find', () => {
-                testExpectToThrowAssertionError(() => expect({}).to.have.find('some'))
+                testExpectToThrowAssertionError(e => e.to.have.find('some'))
 
                 it('should assert that the wrapper has children', () => {
                     expect(wrapper).to.find('div')
@@ -144,7 +148,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('html', () => {
-                testExpectToThrowAssertionError(() => expect({}).html)
+                testExpectToThrowAssertionError(e => e.html)
 
                 it('should be able to chain the html', () => {
                     expect(wrapper).html.not.to.be.empty
@@ -152,7 +156,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('isSelector', () => {
-                testExpectToThrowAssertionError(() => expect({}).isSelector('some'))
+                testExpectToThrowAssertionError(e => e.isSelector('some'))
 
                 it('should assert that the wrapper is a div', () => {
                     expect(wrapper).isSelector('div')
@@ -173,7 +177,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('visible', () => {
-                testExpectToThrowAssertionError(() => expect({}).to.be.visible)
+                testExpectToThrowAssertionError(e => e.to.be.visible)
 
                 it('should assert that wrapper is visible', () => {
                     expect(wrapper).to.be.visible
@@ -185,7 +189,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('name', () => {
-                testExpectToThrowAssertionError(() => expect({}).name)
+                testExpectToThrowAssertionError(e => e.name)
 
                 it('should assert name of wrapper and elements', () => {
                     expect(wrapper).to.have.name('MyComponent')
@@ -202,7 +206,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('props', () => {
-                testExpectToThrowAssertionError(() => expect({}).props)
+                testExpectToThrowAssertionError(e => e.props)
 
                 it('should assert props of wrapper', () => {
                     expect(wrapper).to.have.props('name')
@@ -218,7 +222,7 @@ describe('Vue test utils Wrapper assertions tests', () => {
             })
 
             describe('text', () => {
-                testExpectToThrowAssertionError(() => expect({}).text)
+                testExpectToThrowAssertionError(e => e.text)
 
                 it('should assert text content of wrapper', () => {
                     const label = wrapper.find('label')
