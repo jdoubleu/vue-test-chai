@@ -69,6 +69,12 @@ module.exports = function(chai, utils) {
         }
     }
 
+    function throwIfWrapperArrayAssertionFailed(e) {
+        if (!(e instanceof chai.AssertionError) || e.expected !== 'VueTestWrapperArray') {
+            throw e
+        }
+    }
+
     // chai assertions
 
     /**
@@ -383,7 +389,7 @@ module.exports = function(chai, utils) {
      * @ref https://vue-test-utils.vuejs.org/api/wrapper/#contains-selector
      * @ref https://www.chaijs.com/api/bdd/#method_include
      */
-    function overwriteChainableAssertion(_super) {
+    function overwriteContainsAssertionForWrapper(_super) {
         return function assertWrapperContains(el) {
             const obj = this._obj
 
@@ -404,8 +410,8 @@ module.exports = function(chai, utils) {
         }
     }
 
-    Assertion.overwriteChainableMethod('contain', overwriteChainableAssertion, useDefaultChainableBehaviour)
-    Assertion.overwriteChainableMethod('contains', overwriteChainableAssertion, useDefaultChainableBehaviour)
+    Assertion.overwriteChainableMethod('contain', overwriteContainsAssertionForWrapper, useDefaultChainableBehaviour)
+    Assertion.overwriteChainableMethod('contains', overwriteContainsAssertionForWrapper, useDefaultChainableBehaviour)
 
     /**
      * Assert that the wrapped component emitted events
@@ -931,4 +937,44 @@ module.exports = function(chai, utils) {
             )
         }
     })
+
+    /**
+     * Assert every Wrapper in WrapperArray contains selector
+     *
+     * @name contains
+     * @alias contain
+     * @type method
+     * @param { string|Component } selector
+     * @api public
+     *
+     * @example
+     * expect(wrapperArr).that.contains('div')
+     * expect(wrapperArr).to.contain('div')
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper-array/#contains-selector
+     * @ref https://www.chaijs.com/api/bdd/#method_include
+     */
+    function overwriteContainsAssertionForWrapperArray(_super) {
+        return function assertWrapperArrayContains(selector) {
+            const obj = this._obj
+
+            try {
+                new Assertion(obj).to.be.a.VueTestWrapperArray
+
+                this.assert(
+                    true === obj.contains(selector),
+                    'expected #{this} to contain #{exp}',
+                    'expected #{this} not to contain #{exp}',
+                    selector
+                )
+            } catch(e) {
+                throwIfWrapperArrayAssertionFailed(e)
+
+                _super.apply(this, arguments)
+            }
+        }
+    }
+
+    Assertion.overwriteChainableMethod('contain', overwriteContainsAssertionForWrapperArray, useDefaultChainableBehaviour)
+    Assertion.overwriteChainableMethod('contains', overwriteContainsAssertionForWrapperArray, useDefaultChainableBehaviour)
 }

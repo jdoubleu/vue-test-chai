@@ -63,6 +63,18 @@ describe('Vue test utils WrapperArray assertions tests', () => {
 					expect(wrapperArr).wrapperAt(0).to.be.a.selector('div')
 				})
 			})
+
+			describe('contains method', () => {
+				it('should assert WrapperArray contains only divs', () => {
+                    expect(wrapperArr).that.contains('div')
+                    expect(wrapperArr).to.contain('div')
+                })
+
+                it('should assert default behaviour', () => {
+                    expect(['first', 2]).to.contain(2)
+                    expect(['first', 2]).not.to.contain('div')
+                })
+			})
         })
     })
 })
