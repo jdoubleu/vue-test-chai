@@ -14,6 +14,17 @@ const otherTypes = [
     function() {}
 ]
 
+function w(fn) {
+    return function() {
+        [mount, shallowMount].forEach(mountFn => {
+            const defaultWrapper = mountFn(MyComponent)
+			const defaultWrapperArr = defaultWrapper.findAll('div')
+
+            fn(defaultWrapper, defaultWrapperArr, mountFn)
+        })
+    }
+}
+
 describe('Testing types (properties)', () => {
     describe('of vue components', () => {
         it('should detect type of a vue component', () => {
@@ -38,85 +49,73 @@ describe('Testing types (properties)', () => {
     })
 
     describe('of vue-test-util\'s Wrapper and WrapperArray', () => {
-        [mount, shallowMount].forEach(mountFn => {
-            describe(`using mount function: "${mountFn.name}"`, () => {
-                const wrapper = mountFn(MyComponent)
+        it('should detect type of a Wrapper', w(wrapper => {
+            expect(wrapper).to.be.a.VueTestWrapper
+        }))
 
-                it('should detect type of a Wrapper', () => {
-                    expect(wrapper).to.be.a.VueTestWrapper
-                })
+        it('should detect type of a WrapperArray', w(wrapper => {
+            const arr = wrapper.findAll('div')
 
-                it('should detect type of a WrapperArray', () => {
-                    const arr = wrapper.findAll('div')
+            expect(arr).to.be.a.VueTestWrapperArray
+        }))
 
-                    expect(arr).to.be.a.VueTestWrapperArray
-                })
+        it('should detect type of an ErrorWrapper', w(wrapper => {
+            const non = wrapper.find('non-existing-tag')
 
-                it('should detect type of an ErrorWrapper', () => {
-                    const non = wrapper.find('non-existing-tag')
+            expect(non).to.be.an.VueTestErrorWrapper
+        }))
 
-                    expect(non).to.be.an.VueTestErrorWrapper
-                })
+        it('should assert wrapper to be a VueInstance', w(wrapper => {
+            expect(wrapper).to.be.a.VueInstance
+        }))
 
-                it('should assert wrapper to be a VueInstance', () => {
-                    expect(wrapper).to.be.a.VueInstance
-                })
+        it('should assert WrapperArray has only VueInstances', w((_, __, mountFn) => {
+            const otherArr = mountFn(MyComposedComponent).findAll(MyComponent)
 
-                it('should assert WrapperArray has only VueInstances', () => {
-                    const otherArr = mountFn(MyComposedComponent).findAll(MyComponent)
+            expect(otherArr).to.be.a.VueInstance
+        }))
 
-                    expect(otherArr).to.be.a.VueInstance
-                })
+        it('should assert wrapped DOM element is not a VueInstance', w(wrapper => {
+            const el = wrapper.find('button')
 
-                it('should assert wrapped DOM element is not a VueInstance', () => {
-                    const el = wrapper.find('button')
+            expect(el).not.to.be.a.VueInstance
+        }))
 
-                    expect(el).not.to.be.a.VueInstance
-                })
+        it('should assert WrapperArray not only has VueInstances', w(wrapper => {
+            const arr = wrapper.findAll('div')
 
-                it('should assert WrapperArray not only has VueInstances', () => {
-                    const arr = wrapper.findAll('div')
+            expect(arr).not.to.be.a.VueInstance
+        }))
 
-                    expect(arr).not.to.be.a.VueInstance
-                })
+        it('should throw error if wrapper is not a Wrapper', () => {
+            expect(function() {
+                expect({}).to.be.a.VueInstance
+            }).to.throw(AssertionError)
+        })
 
-                it('should throw error if wrapper is not a Wrapper', () => {
-                    expect(function() {
-                        expect({}).to.be.a.VueInstance
-                    }).to.throw(AssertionError)
-                })
+        it('should not falsely detect another type as a Wrapper', () => {
+            otherTypes.forEach(t => {
+                expect(t, `expected "${typeof t}" not to be a Wrapper`).not.to.be.a.VueTestWrapper
+            })
+        })
 
-                it('should not falsely detect another type as a Wrapper', () => {
-                    otherTypes.forEach(t => {
-                        expect(t, `expected "${typeof t}" not to be a Wrapper`).not.to.be.a.VueTestWrapper
-                    })
-                })
+        it('should not falsely detect another type as a WrapperArray', () => {
+            otherTypes.forEach(t => {
+                expect(t, `expected "${typeof t}" not to be a WrapperArray`).not.to.be.a.VueTestWrapperArray
+            })
+        })
 
-                it('should not falsely detect another type as a WrapperArray', () => {
-                    otherTypes.forEach(t => {
-                        expect(t, `expected "${typeof t}" not to be a WrapperArray`).not.to.be.a.VueTestWrapperArray
-                    })
-                })
-
-                it('should not falsely detect another type as a WrapperArray', () => {
-                    otherTypes.forEach(t => {
-                        expect(t, `expected "${typeof t}" not to be a WrapperArray`).not.to.be.a.VueTestErrorWrapper
-                    })
-                })
+        it('should not falsely detect another type as a WrapperArray', () => {
+            otherTypes.forEach(t => {
+                expect(t, `expected "${typeof t}" not to be a WrapperArray`).not.to.be.a.VueTestErrorWrapper
             })
         })
     })
 
     describe('of vue instances', () => {
-        [mount, shallowMount].forEach(mountFn =>{
-            describe(`using mount function: "${ mountFn.name }"`, () => {
-                const wrapper = mountFn(MyComponent)
-
-                it('should detect vue instance', () => {
-                    expect(wrapper.vm).to.be.Vue
-                    expect(wrapper.vm).to.be.a.Vue
-                })
-            })
-        })
+        it('should detect vue instance', w(wrapper => {
+            expect(wrapper.vm).to.be.Vue
+            expect(wrapper.vm).to.be.a.Vue
+        }))
     })
 })
