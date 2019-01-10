@@ -850,4 +850,50 @@ module.exports = function(chai, utils) {
     }
 
     Assertion.addChainableMethod('text', assertWrapperText, chainWrapperText)
+
+    /**
+     * Chain all wrappers contained in a WrapperArray
+     *
+     * @name wrappers
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapperArr).wrappers.not.to.be.empty
+     * expect(wrapperArr).to.have.wrappers.with.a.lengthOf(2)
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper-array/#properties
+     */
+    Assertion.addProperty('wrappers', function() {
+        const obj = this._obj
+
+        new Assertion(obj).to.be.a.VueTestWrapperArray
+
+        const wrappers = obj.wrappers
+
+        new Assertion(wrappers).to.be.an('array')
+
+        utils.flag(this, 'object', wrappers)
+    })
+
+    /**
+     * Chain Number of Wrappers contained in the WrapperArray
+     *
+     * @name length
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapperArr).wrappers.length.to.be.at.least(2)
+     * expect(wrapperArr).wrappers.to.have.a.lengthOf(2)
+     * expect(wrapperArr).length.to.be.at.least(2)
+     * expect(wrapperArr).to.have.a.lengthOf(2)
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper-array/#properties
+     */
+    // eslint-disable-next-line no-unused-vars
+    function chainWrapperArrayLength() {
+        // This is a stub, because chai already supports length property access
+        // @see https://www.chaijs.com/api/plugins/#method_addlengthguard
+    }
 }
