@@ -82,6 +82,26 @@ describe('Vue test utils WrapperArray assertions tests', () => {
                     expect(wrapperArr).to.be.selector('div')
                 })
             })
+
+			describe('empty', () => {
+                it('should assert that WrapperArray is not empty', () => {
+                    expect(wrapperArr).not.to.be.empty
+                })
+
+                it('should assert that WrapperArray of blockquote is empty', () => {
+                	const otherArr = wrapper.findAll('#cinc')
+
+                    expect(otherArr).to.be.empty
+                })
+
+				it('should throw error when WrapperArray is empty', () => {
+					const otherArr = wrapper.findAll('blockquote')
+
+					expect(function() {
+						expect(otherArr).empty
+					}).to.throw('isEmpty cannot be called on 0 items')
+				})
+            })
         })
     })
 })

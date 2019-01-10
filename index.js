@@ -1022,4 +1022,38 @@ module.exports = function(chai, utils) {
     Assertion.overwriteMethod('selector', overwriteWrapperIsAssertionForWrapperArray)
 
     // TODO: find better integration for selector (e.g. expect(wrapperArr).to.be('div'), .to.match.selector('div'), .to.be.a('div'))
+
+    /**
+     * Assert every Wrapper in WrapperArray does not contain child node
+     *
+     * @name empty
+     * @type property
+     * @api public
+     *
+     * @example
+     * expect(wrapperArr).not.to.be.empty
+     * expect(otherArr).to.be.empty
+     *
+     * @ref https://vue-test-utils.vuejs.org/api/wrapper-array/#isempty
+     * @ref https://www.chaijs.com/api/bdd/#method_empty
+     */
+    Assertion.overwriteProperty('empty', function(_super) {
+        return function assertWrapperEmpty() {
+            const obj = this._obj
+
+            try {
+                new Assertion(obj).to.be.a.VueTestWrapperArray
+
+                this.assert(
+                    obj.isEmpty() === true,
+                    'expected #{this} to be empty, but was not',
+                    'expected #{this} not to be empty, but it was'
+                )
+            } catch(e) {
+                throwIfWrapperArrayAssertionFailed(e)
+
+                _super.apply(this, arguments)
+            }
+        }
+    })
 }
