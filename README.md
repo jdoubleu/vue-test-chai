@@ -40,3 +40,6 @@ chai.use(vueTestChai)
 ```
 
 You can include any file in mocha using the [`--require` flag](https://mochajs.org/#usage).
+
+## Documentation
+* [API Documentation](./docs/API.md)
