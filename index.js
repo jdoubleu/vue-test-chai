@@ -57,6 +57,18 @@ module.exports = function(chai, utils) {
     // chai assertions
 
     /**
+     * Vue Test Utils Wrapper
+     * @namespace Wrapper
+     * @api public
+     */
+
+    /**
+     * Vue Test Utils WrapperArray
+     * @namespace WrapperArray
+     * @api public
+     */
+
+    /**
      * Type property VueComponent
      *
      * Check the type of the test subject
@@ -183,6 +195,7 @@ module.exports = function(chai, utils) {
      * All following chains will operate on the vm object
      *
      * @name vm
+     * @memberOf Wrapper
      * @type prop
      * @api public
      *
@@ -212,6 +225,7 @@ module.exports = function(chai, utils) {
      * All following chains will operate on the root DOM node of the wrapper
      *
      * @name element
+     * @memberOf Wrapper
      * @type property
      * @api public
      *
@@ -238,6 +252,7 @@ module.exports = function(chai, utils) {
      * Access vue-test-util's Wrapper options
      *
      * @name option
+     * @memberOf Wrapper
      * @type method
      * @param { string } name
      * @param { * } val (optional)
@@ -268,6 +283,7 @@ module.exports = function(chai, utils) {
      * Asserts the attributes of the DOM node from the vue-test-util Wrapper
      *
      * @name attributes
+     * @memberOf Wrapper
      * @type method
      * @param { string } key name of the attribute
      * @param { * } val (optional)
@@ -294,6 +310,7 @@ module.exports = function(chai, utils) {
      * Chain vue-test-utils Wrapper attributes
      *
      * @name attributes
+     * @memberOf Wrapper
      * @type property
      * @api public
      *
@@ -321,6 +338,7 @@ module.exports = function(chai, utils) {
      * Assert DOM node classes of the vue-test-util Wrapper
      *
      * @name classes
+     * @memberOf Wrapper
      * @type method
      * @param { string|string[] } className (optional)
      * @param { string } msg (optional)
@@ -352,6 +370,7 @@ module.exports = function(chai, utils) {
      * Chain vue-test-utils Wrapper's DOM node classes
      *
      * @name classes
+     * @memberOf Wrapper
      * @type property
      * @api public
      *
@@ -379,7 +398,7 @@ module.exports = function(chai, utils) {
      * Assert vue-test-utils Wrapper contains
      *
      * @name contains
-     * @alias contain
+     * @memberOf Wrapper
      * @type method
      * @param { string|Component } selector
      * @api public
@@ -415,6 +434,7 @@ module.exports = function(chai, utils) {
      * Assert that the wrapped component emitted events
      *
      * @name emitted
+     * @memberOf Wrapper
      * @type method
      * @param { string } eventName
      * @param { int } times (optional) how often the event should have been emitted
@@ -469,6 +489,7 @@ module.exports = function(chai, utils) {
      * Assert Wrapper has emitted the following events by order
      *
      * @name emittedByOrder
+     * @memberOf Wrapper
      * @type method
      * @param { string[]|Array<{name: string, args: Array<*>}> } events
      * @param { int } offset (optional) default 0
@@ -572,6 +593,7 @@ module.exports = function(chai, utils) {
      * Assert that the wrapper exists
      *
      * @name exists
+     * @memberOf Wrapper
      * @type method
      * @api public
      *
@@ -598,6 +620,7 @@ module.exports = function(chai, utils) {
      * Same as method 'exists'
      *
      * @name exist
+     * @memberOf Wrapper
      * @type property
      * @api public
      *
@@ -626,6 +649,7 @@ module.exports = function(chai, utils) {
      * This method is chainable on the found element.
      *
      * @name find
+     * @memberOf Wrapper
      * @type method
      * @param { string|Component } selector
      * @param { string } msg (optional)
@@ -656,6 +680,7 @@ module.exports = function(chai, utils) {
      * Chain children of Wrapper as WrapperArray
      *
      * @name findAll
+     * @memberOf Wrapper
      * @type method
      * @param { string|Component } selector
      * @param { string } msg (optional)
@@ -684,6 +709,7 @@ module.exports = function(chai, utils) {
      * Chain html of the wrapped DOM node
      *
      * @name html
+     * @memberOf Wrapper
      * @type prop
      * @api public
      *
@@ -704,7 +730,7 @@ module.exports = function(chai, utils) {
      * Assert the Wrapper to be/match a selector
      *
      * @name isSelector
-     * @alias selector
+     * @memberOf Wrapper
      * @type method
      * @param { string } selector
      * @param { string } msg (optional)
@@ -741,6 +767,7 @@ module.exports = function(chai, utils) {
      * Assert that the Wrapper does contain child nodes
      *
      * @name empty
+     * @memberOf Wrapper
      * @type property
      * @api public
      *
@@ -771,6 +798,7 @@ module.exports = function(chai, utils) {
      * Assert the Wrapper is visible
      *
      * @name visible
+     * @memberOf Wrapper
      * @type property
      * @api public
      *
@@ -795,6 +823,7 @@ module.exports = function(chai, utils) {
      * Assert Wrapper is a Vue instance
      *
      * @name VueInstance
+     * @memberOf Wrapper
      * @type property
      * @api public
      *
@@ -820,6 +849,7 @@ module.exports = function(chai, utils) {
      * Assert Wrapper's name
      *
      * @name name
+     * @memberOf Wrapper
      * @type method
      * @param { string } name
      * @param { string } msg (optional)
@@ -848,6 +878,7 @@ module.exports = function(chai, utils) {
      * Chain Wrapper's name
      *
      * @name name
+     * @memberOf Wrapper
      * @type property
      * @api public
      *
@@ -871,6 +902,7 @@ module.exports = function(chai, utils) {
      * Assert that wrapper has prop
      *
      * @name props
+     * @memberOf Wrapper
      * @type method
      * @param { string } key
      * @param { * } value (optional)
@@ -897,6 +929,7 @@ module.exports = function(chai, utils) {
      * Chain Wrapper's props
      *
      * @name props
+     * @memberOf Wrapper
      * @type property
      * @api public
      *
@@ -924,6 +957,7 @@ module.exports = function(chai, utils) {
      * Assert text content of Wrapper
      *
      * @name text
+     * @memberOf Wrapper
      * @type method
      * @param { string } value
      * @param { string } msg (optional)
@@ -951,6 +985,7 @@ module.exports = function(chai, utils) {
      * Chain Wrapper's text
      *
      * @name text
+     * @memberOf Wrapper
      * @type property
      * @api public
      *
@@ -978,6 +1013,7 @@ module.exports = function(chai, utils) {
      * Chain all wrappers contained in a WrapperArray
      *
      * @name wrappers
+     * @memberOf WrapperArray
      * @type property
      * @api public
      *
@@ -1003,6 +1039,7 @@ module.exports = function(chai, utils) {
      * Chain Number of Wrappers contained in the WrapperArray
      *
      * @name length
+     * @memberOf WrapperArray
      * @type property
      * @api public
      *
@@ -1024,6 +1061,7 @@ module.exports = function(chai, utils) {
      * Assert and chain a Wrapper at index in WrapperArray
      *
      * @name wrapperAt
+     * @memberOf WrapperArray
      * @type method
      * @api public
      *
@@ -1059,7 +1097,7 @@ module.exports = function(chai, utils) {
      * Assert every Wrapper in WrapperArray contains selector
      *
      * @name contains
-     * @alias contain
+     * @memberOf WrapperArray
      * @type method
      * @param { string|Component } selector
      * @api public
@@ -1095,7 +1133,7 @@ module.exports = function(chai, utils) {
      * Assert every Wrapper's DOM node or vm in WrapperArray to match selector
      *
      * @name isSelector
-     * @alias selector
+     * @memberOf WrapperArray
      * @type method
      * @param { string } selector
      * @param { string } msg (optional)
@@ -1136,6 +1174,7 @@ module.exports = function(chai, utils) {
      * Assert every Wrapper in WrapperArray does not contain child node
      *
      * @name empty
+     * @memberOf WrapperArray
      * @type property
      * @api public
      *
@@ -1166,6 +1205,7 @@ module.exports = function(chai, utils) {
      * Assert every Wrapper in WrapperArray is Vue instance.
      *
      * @name VueInstance
+     * @memberOf WrapperArray
      * @type property
      * @api public
      *

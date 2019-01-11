@@ -13,45 +13,59 @@ let data = jsdoc2md.getTemplateDataSync({
 
 data = data
 	.filter(d => {
-		const tags = d.customTags
-
-		return tags && tags[0]
-			&& tags[0].tag === 'api'
-			&& tags[0].value === 'public'
+		return d.customTags
+			&& d.customTags.find(t => t.tag === 'api' && t.value === 'public')
 	})
 
 const output = jsdoc2md.renderSync({
 	data,
-	'heading-depth': 0,
 	'example-lang': 'javascript',
 	helper: path.resolve(__dirname, '..', 'helpers.jsdoc.js'),
-	template: `
-{{#globals kind="member" ~}}
-{{#if @first~}}### Index
-{{/if~}}
+	template: `### Index
+{{#*inline "sig-link"}}
+{{#if name}}{{#sig~}}
+{{{@depOpen}~}}
+[{{{@codeOpen}~}}
+{{name}}
+{{~#if @methodSign}}{{#if (isEvent)}} {{@methodSign}}{{else}}{{@methodSign}}{{/if}}{{/if~}}
+{{{@codeClose}}}](#{{{anchorName}}})
+{{~#if @returnSymbol}} {{@returnSymbol}}{{/if~}}
+{{#if @returnTypes}} {{>linked-type-list types=@returnTypes delimiter=" \\| " }}{{/if~}}
+{{{@depClose}~}}
+{{~/sig}}{{/if~}}
+{{/inline~}}
+
+{{#*inline "member-index-grouped"}}
+* {{name}}
+{{#groupBy (option "group-by")}}
+{{string-repeat "  " (add level 1)}}* {{>sig-link}}
+{{/groupBy~}}
+{{/inline~}}
+
+{{#globals kind="member"~}}
 * {{>sig-link}}
+{{/globals~}}
+{{#globals kind="namespace"}}
+{{>member-index-grouped}}
 {{/globals}}
 
 ---
 
-{{#orphans ~}}
-<a name="{{{anchorName}}}"></a>
-{{#if name}}{{#sig~}}
-{{#if @prefix}}{{@prefix}} {{/if~}}
-#### {{name}}
-{{#if @methodSign}}{{#if (isEvent)}} {{@methodSign}}{{else}}{{@methodSign}}{{/if}}{{/if~}}
-{{~/sig}}{{/if~}}
+{{#*inline "member-info"}}
+{{#if name}}
+#### {{#sig}}{{name}} {{#if @returnTypes}}{{>linked-type-list types=@returnTypes}}{{/if~}}{{/sig}}{{#if memberof}}, <code>{{memberof}}</code>{{/if}}
+{{/if}}
 
 {{>description~}}
 
-* **Type:** {{#sig~}}{{#if @returnTypes}}{{>linked-type-list types=@returnTypes}}{{/if~}}{{~/sig}}
-{{#if params~}}
-{{#params}}* **Params:**
+* **Type:** {{#sig}}{{#if @returnTypes}}{{>linked-type-list types=@returnTypes}}{{/if}}{{/sig~}}
+{{#if alias}}* **Alias:** {{alias}}{{/if}}
+{{#if params}}{{#params}}* **Params:**
 {{#each this}}
   * {{name}}{{#if type}} {{>linked-type-list types=type.names delimiter=" | " }}{{/if}}{{#if description}} {{{inlineLinks description}}}{{/if}}
 {{/each~}}
 {{/params~}}{{/if~}}
-{{#if (hasAtLeastOneCustomTag "ref" customTags)~}}* **References:**
+{{#if (hasAtLeastOneCustomTag "ref" customTags)}}* **References:**
 {{#each customTags~}}{{#if (equal tag "ref")}}  * {{{inlineLinks value}}}
 {{/if~}}{{/each~}}
 {{/if~}}
@@ -60,7 +74,11 @@ const output = jsdoc2md.renderSync({
 {{{inlineLinks example}}}
 {{/examples}}
 
-{{/orphans~}}
+{{/inline~}}
+
+{{#identifiers kind="member"~}}
+{{>member-info}}
+{{/identifiers}}
 `
 })
 
