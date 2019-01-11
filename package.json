@@ -5,7 +5,7 @@
   "main": "lib/vue-test-chai.js",
   "scripts": {
     "test": "mocha",
-    "lint": "eslint index.js",
+    "lint": "eslint lib/vue-test-chai.js",
     "docs:api": "./scripts/apidocs.js docs/API.md"
   },
   "repository": {
