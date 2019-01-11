@@ -196,7 +196,7 @@ module.exports = function(chai, utils) {
      *
      * @name vm
      * @memberOf Wrapper
-     * @type prop
+     * @type property
      * @api public
      *
      * @example
@@ -710,7 +710,7 @@ module.exports = function(chai, utils) {
      *
      * @name html
      * @memberOf Wrapper
-     * @type prop
+     * @type property
      * @api public
      *
      * @example

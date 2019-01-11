@@ -6,7 +6,7 @@
 * [VueTestErrorWrapper](#VueTestErrorWrapper-property) : <code>property</code>
 * [Vue](#Vue-property) : <code>property</code>
 * Wrapper
-  * [vm](#vm-prop-Wrapper) : <code>prop</code>
+  * [vm](#vm-property-Wrapper) : <code>property</code>
   * [element](#element-property-Wrapper) : <code>property</code>
   * [option](#option-method-Wrapper) : <code>method</code>
   * [attributes](#attributes-method-Wrapper) : <code>method</code>
@@ -20,7 +20,7 @@
   * [exist](#exist-property-Wrapper) : <code>property</code>
   * [find](#find-method-Wrapper) : <code>method</code>
   * [findAll](#findAll-method-Wrapper) : <code>method</code>
-  * [html](#html-prop-Wrapper) : <code>prop</code>
+  * [html](#html-property-Wrapper) : <code>property</code>
   * [isSelector](#isSelector-method-Wrapper) : <code>method</code>
   * [empty](#empty-property-Wrapper) : <code>property</code>
   * [visible](#visible-property-Wrapper) : <code>property</code>
@@ -120,13 +120,13 @@ expect(wrapper.find('non-existing-tag')).to.be.an.VueTestErrorWrapper
 expect(wrapper.vm).to.be.vue
 ```
 
-#### vm <code>prop</code>, <code>Wrapper</code>
+#### vm <code>property</code>, <code>Wrapper</code>
 
 Access vue-test-util's Wrapper vm
 
 All following chains will operate on the vm object
 
-* **Type:** <code>prop</code>
+* **Type:** <code>property</code>
 * **References:**
   * https://vue-test-utils.vuejs.org/api/wrapper/#properties
 * **Example:**
@@ -343,11 +343,11 @@ expect(wrapper).findAll('div').to.be.selector('div')
 expect(wrapper).to.findAll('h1').which.has.a.wrapperAt(0).that.is.a.selector('h1')
 ```
 
-#### html <code>prop</code>, <code>Wrapper</code>
+#### html <code>property</code>, <code>Wrapper</code>
 
 Chain html of the wrapped DOM node
 
-* **Type:** <code>prop</code>
+* **Type:** <code>property</code>
 * **References:**
   * https://vue-test-utils.vuejs.org/api/wrapper/#html
 * **Example:**
