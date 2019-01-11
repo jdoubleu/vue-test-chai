@@ -60,9 +60,6 @@ const output = jsdoc2md.renderSync({
 {{{inlineLinks example}}}
 {{/examples}}
 
-{{>member-index~}}
-{{>separator~}}
-{{>members~}}
 {{/orphans~}}
 `
 })
