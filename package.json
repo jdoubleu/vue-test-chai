@@ -12,6 +12,9 @@
     "type": "git",
     "url": "https://github.com/jdoubleu/vue-test-chai.git"
   },
+  "files": [
+    "lib/"
+  ],
   "keywords": [
     "chai",
     "vue-test-utils",
