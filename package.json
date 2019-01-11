@@ -2,7 +2,7 @@
   "name": "vue-test-chai",
   "version": "0.1.0-1",
   "description": "Custom chai assertions and language chains for vue-test-utils",
-  "main": "index.js",
+  "main": "lib/vue-test-chai.js",
   "scripts": {
     "test": "mocha",
     "lint": "eslint index.js",

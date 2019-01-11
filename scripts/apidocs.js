@@ -8,7 +8,7 @@ const path = require('path')
 const fs = require('fs')
 
 let data = jsdoc2md.getTemplateDataSync({
-	files: path.resolve(__dirname, '..', 'index.js')
+	files: path.resolve(__dirname, '..', 'lib/vue-test-chai.js')
 })
 
 data = data
