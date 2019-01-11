@@ -1,6 +1,6 @@
 {
   "name": "vue-test-chai",
-  "version": "0.1.0-1",
+  "version": "0.1.0-2",
   "description": "Custom chai assertions and language chains for vue-test-utils",
   "main": "lib/vue-test-chai.js",
   "scripts": {
