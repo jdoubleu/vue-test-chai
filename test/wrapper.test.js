@@ -223,6 +223,10 @@ describe('Vue test utils Wrapper assertions tests', () => {
             expect(wrapper).to.find('#cinc')
         }))
 
+        it('should assert that the wrapper has not specific children', w(wrapper => {
+            expect(wrapper).not.to.find('blockquote')
+        }))
+
         it('should be able to chain the #find() method', w(wrapper => {
             expect(wrapper).to.find('h1').which.has.attributes('id', 'heading')
         }))
@@ -234,6 +238,10 @@ describe('Vue test utils Wrapper assertions tests', () => {
         it('should assert that the wrapper has children', w(wrapper => {
             expect(wrapper).to.findAll('div')
             expect(wrapper).to.findAll('#cinc')
+        }))
+
+        it('should assert that the wrapper has not specific children', w(wrapper => {
+            expect(wrapper).not.to.findAll('blockquote')
         }))
 
         it('should be able to chain the #findAll() method', w(wrapper => {
